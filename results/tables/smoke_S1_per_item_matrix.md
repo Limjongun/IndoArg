@@ -1,0 +1,16 @@
+| id | tool_target | register | M1 | M2 | M3 | M4 | M5 |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| SMK01 | buat_pengingat | informal | OK | OK | OK | OK | E_TOOL |
+| SMK02 | buat_pengingat | campur | E_VALUE_WRONG | E_VALUE_WRONG | OK | E_VALUE_WRONG | E_VALUE_WRONG |
+| SMK03 | transfer_ewallet | informal | E_VALUE_WRONG | E_VALUE_WRONG | OK | E_SCHEMA,E_TOOL | E_VALUE_WRONG |
+| SMK04 | transfer_ewallet | campur | OK | OK | OK | E_SCHEMA,E_VALUE_FORMAT | OK |
+| SMK05 | cek_ongkir | informal | OK | OK | OK | E_SCHEMA,E_VALUE_WRONG | OK |
+| SMK06 | cek_ongkir | informal | E_VALUE_WRONG | E_VALUE_WRONG | E_VALUE_WRONG | E_SCHEMA,E_VALUE_WRONG | E_VALUE_WRONG |
+| SMK07 | jadwal_krl | informal | E_VALUE_WRONG | E_SCHEMA,E_VALUE_WRONG | E_VALUE_WRONG | E_SCHEMA,E_VALUE_LANG,E_VALUE_WRONG | E_VALUE_WRONG |
+| SMK08 | cek_cuaca | informal | E_VALUE_WRONG | OK | E_VALUE_WRONG | E_SCHEMA,E_VALUE_LANG | E_VALUE_WRONG |
+| SMK09 | pesan_ojek | informal | OK | OK | OK | OK | OK |
+| SMK10 | konversi_kurs | formal | OK | OK | OK | E_SCHEMA,E_VALUE_FORMAT | OK |
+| SMK11 | bayar_tagihan | informal | OK | OK | OK | E_SCHEMA,E_VALUE_WRONG | OK |
+| SMK12 | buat_jadwal_rapat | campur | OK | OK | OK | E_SCHEMA,E_VALUE_WRONG | OK |
+| SMK13 | cari_dokumen | formal | OK | OK | OK | E_SCHEMA,E_VALUE_WRONG | OK |
+| SMK14 | no_call | informal | OK | OK | OK | E_OVERCALL | E_OVERCALL |

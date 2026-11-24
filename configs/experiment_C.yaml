@@ -1,0 +1,13 @@
+# Eksperimen C: Runtime variance (RQ5)
+name: C_runtime
+quant: Q4_K_M
+model_dir: models
+models: [M1, M5]              # Qwen + SEA-LION (template berbeda)
+strategies: [S1]
+runtimes:
+  - ollama_native             # file GGUF yang SAMA, dibuat lewat Modelfile FROM ../Q4_K_M/M1.gguf
+  - llamacpp_jinja            # llama-server --jinja (parser tool bawaan)
+  - llamacpp_grammar          # llama-server + S2 grammar
+split: test
+registers: [formal, informal, campur]
+decoding: greedy

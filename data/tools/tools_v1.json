@@ -1,0 +1,304 @@
+[
+  {
+    "type": "function",
+    "function": {
+      "name": "buat_pengingat",
+      "description": "Membuat pengingat jadwal pada waktu tertentu.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "judul": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Judul atau isi singkat pengingat"
+          },
+          "waktu": {
+            "type": "string",
+            "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\+07:00$",
+            "description": "Waktu pengingat dalam format ISO-8601 WIB (+07:00), yaitu YYYY-MM-DDTHH:MM:SS+07:00"
+          }
+        },
+        "required": ["judul", "waktu"],
+        "additionalProperties": false
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "transfer_ewallet",
+      "description": "Mengirim uang lewat dompet digital.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "penerima": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Nama atau nomor penerima"
+          },
+          "nominal": {
+            "type": "integer",
+            "minimum": 1000,
+            "description": "Jumlah dalam rupiah, bilangan bulat tanpa titik"
+          },
+          "platform": {
+            "type": "string",
+            "enum": ["gopay", "ovo", "dana", "shopeepay"],
+            "description": "Nama layanan dompet digital kanonik"
+          }
+        },
+        "required": ["penerima", "nominal", "platform"],
+        "additionalProperties": false
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "cek_ongkir",
+      "description": "Mengecek estimasi ongkos kirim paket antarwilayah di Indonesia.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "asal": {
+            "type": "string",
+            "pattern": "^[0-9]{2}\\.[0-9]{2}$",
+            "description": "Kode wilayah asal resmi Kemendagri (format XX.XX)"
+          },
+          "tujuan": {
+            "type": "string",
+            "pattern": "^[0-9]{2}\\.[0-9]{2}$",
+            "description": "Kode wilayah tujuan resmi Kemendagri (format XX.XX)"
+          },
+          "berat_gram": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "Berat paket dalam satuan gram (bilangan bulat)"
+          },
+          "kurir": {
+            "type": "string",
+            "enum": ["jne", "jnt", "sicepat", "pos"],
+            "description": "Kode kurir ekspedisi"
+          }
+        },
+        "required": ["asal", "tujuan", "berat_gram", "kurir"],
+        "additionalProperties": false
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "jadwal_krl",
+      "description": "Mencari jadwal keberangkatan KRL Commuter Line antarstasiun.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "stasiun_asal": {
+            "type": "string",
+            "enum": [
+              "AK", "BJD", "BKS", "BKST", "BOO", "CBI", "CIT", "CJT", "CKI", "CKR",
+              "CTA", "CUK", "DAR", "DP", "DPB", "DU", "GDD", "GST", "JAKK", "JNG",
+              "JUA", "KBY", "KDB", "KLD", "KMO", "KPB", "KRI", "LNA", "MJ", "MRI",
+              "NMO", "PDJ", "PGB", "POC", "PRP", "PSE", "PSM", "RKS", "RW", "SDB",
+              "SDM", "SRP", "SUD", "TB", "TEB", "THB", "TNG", "TPK", "UI", "UP"
+            ],
+            "description": "Kode stasiun KRL keberangkatan"
+          },
+          "stasiun_tujuan": {
+            "type": "string",
+            "enum": [
+              "AK", "BJD", "BKS", "BKST", "BOO", "CBI", "CIT", "CJT", "CKI", "CKR",
+              "CTA", "CUK", "DAR", "DP", "DPB", "DU", "GDD", "GST", "JAKK", "JNG",
+              "JUA", "KBY", "KDB", "KLD", "KMO", "KPB", "KRI", "LNA", "MJ", "MRI",
+              "NMO", "PDJ", "PGB", "POC", "PRP", "PSE", "PSM", "RKS", "RW", "SDB",
+              "SDM", "SRP", "SUD", "TB", "TEB", "THB", "TNG", "TPK", "UI", "UP"
+            ],
+            "description": "Kode stasiun KRL tujuan"
+          },
+          "waktu": {
+            "type": "string",
+            "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\+07:00$",
+            "description": "Waktu keberangkatan yang diinginkan dalam format ISO-8601 WIB (+07:00)"
+          }
+        },
+        "required": ["stasiun_asal", "stasiun_tujuan", "waktu"],
+        "additionalProperties": false
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "cek_cuaca",
+      "description": "Mengecek prakiraan cuaca untuk wilayah dan tanggal tertentu.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "wilayah": {
+            "type": "string",
+            "pattern": "^[0-9]{2}\\.[0-9]{2}$",
+            "description": "Kode wilayah resmi Kemendagri (format XX.XX)"
+          },
+          "tanggal": {
+            "type": "string",
+            "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$",
+            "description": "Tanggal prakiraan dalam format YYYY-MM-DD"
+          }
+        },
+        "required": ["wilayah", "tanggal"],
+        "additionalProperties": false
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "pesan_ojek",
+      "description": "Memesan layanan transportasi ojek atau mobil daring.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "jemput": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Lokasi penjemputan"
+          },
+          "tujuan": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Lokasi tujuan"
+          },
+          "layanan": {
+            "type": "string",
+            "enum": ["motor", "mobil"],
+            "description": "Jenis kendaraan layanan kanonik"
+          }
+        },
+        "required": ["jemput", "tujuan", "layanan"],
+        "additionalProperties": false
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "konversi_kurs",
+      "description": "Mengonversi nilai mata uang asing atau rupiah.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "jumlah": {
+            "type": "number",
+            "exclusiveMinimum": 0,
+            "description": "Nominal uang yang akan dikonversi"
+          },
+          "dari": {
+            "type": "string",
+            "pattern": "^[A-Z]{3}$",
+            "description": "Kode mata uang asal ISO-4217 (3 huruf kapital)"
+          },
+          "ke": {
+            "type": "string",
+            "pattern": "^[A-Z]{3}$",
+            "description": "Kode mata uang tujuan ISO-4217 (3 huruf kapital)"
+          }
+        },
+        "required": ["jumlah", "dari", "ke"],
+        "additionalProperties": false
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "bayar_tagihan",
+      "description": "Membayar tagihan utilitas, iuran, atau pulsa.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "jenis": {
+            "type": "string",
+            "enum": ["pln", "pdam", "bpjs", "pulsa"],
+            "description": "Jenis tagihan kanonik"
+          },
+          "id_pelanggan": {
+            "type": "string",
+            "minLength": 4,
+            "description": "Nomor ID pelanggan atau nomor ponsel"
+          },
+          "nominal": {
+            "type": "integer",
+            "minimum": 1000,
+            "description": "Jumlah pembayaran dalam rupiah, bilangan bulat tanpa titik"
+          }
+        },
+        "required": ["jenis", "id_pelanggan", "nominal"],
+        "additionalProperties": false
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "buat_jadwal_rapat",
+      "description": "Membuat jadwal rapat lengkap dengan waktu mulai, durasi, dan daftar peserta.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "judul": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Judul rapat"
+          },
+          "mulai": {
+            "type": "string",
+            "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\+07:00$",
+            "description": "Waktu mulai rapat dalam format ISO-8601 WIB (+07:00)"
+          },
+          "durasi_menit": {
+            "type": "integer",
+            "minimum": 5,
+            "description": "Durasi rapat dalam satuan menit (bilangan bulat)"
+          },
+          "peserta": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "minItems": 1,
+            "description": "Daftar nama atau email peserta rapat"
+          }
+        },
+        "required": ["judul", "mulai", "durasi_menit", "peserta"],
+        "additionalProperties": false
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "cari_dokumen",
+      "description": "Mencari dokumen internal berdasarkan kueri kata kunci.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Kata kunci pencarian dokumen"
+          },
+          "top_k": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 50,
+            "description": "Jumlah maksimum hasil dokumen yang diambil"
+          }
+        },
+        "required": ["query", "top_k"],
+        "additionalProperties": false
+      }
+    }
+  }
+]

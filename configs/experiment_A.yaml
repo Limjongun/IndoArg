@@ -1,0 +1,11 @@
+# Eksperimen A: Utama (RQ1-RQ3) — model x strategi @ Q4_K_M
+name: A_main
+quant: Q4_K_M                 # SATU nilai untuk semua model
+model_dir: models
+models: [M1, M2, M3, M4, M5]
+strategies: [S1, S2, S3, S4]
+runtime: llamacpp_server
+split: test
+registers: [formal, informal, campur]
+decoding: greedy              # lihat inference.yaml
+robustness_seeds: [11, 22, 33] # hanya untuk sub-run T=0.7 (opsional)

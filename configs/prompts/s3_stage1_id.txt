@@ -1,0 +1,5 @@
+Tahap 1 (Analisis dan Normalisasi):
+Analisis permintaan pengguna di bawah ini secara singkat sebelum memanggil tool.
+1. Tentukan apakah permintaan membutuhkan salah satu tool yang tersedia, atau tidak membutuhkan tool (tulis: NO_CALL).
+2. Jika membutuhkan tool, sebutkan nama tool target dan tuliskan setiap nilai argumen dalam bentuk kanoniknya (waktu ISO-8601+07:00, tanggal YYYY-MM-DD, nominal rupiah bulat, kode wilayah XX.XX, kode stasiun KRL, satuan gram/menit, nilai enum baku).
+3. Jangan keluarkan JSON final dulu; cukup tuliskan hasil normalisasi yang ringkas dan jelas.

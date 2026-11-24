@@ -1,0 +1,10 @@
+# Eksperimen B: Kuantisasi x Register (RQ4)
+name: B_quant_register
+model_dir: models
+quant_ladder: [BF16, Q8_0, Q6_K, Q4_K_M, Q3_K_M]  # tangga SAMA untuk semua model
+models: [M1, M3]              # satu kecil Qwen, satu Gemma (beda keluarga)
+strategies: [S1, BEST_FROM_A] # S1 + strategi terbaik dari Eksp. A
+runtime: llamacpp_server
+split: test
+registers: [formal, informal, campur]
+decoding: greedy

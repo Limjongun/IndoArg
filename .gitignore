@@ -1,0 +1,37 @@
+# Virtual environment & Python cache
+.venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+build/
+dist/
+
+# Environment secrets
+.env
+
+# Model weights & calibration matrices (JANGAN commit GGUF)
+models/**/*.gguf
+models/**/*.bin
+models/**/*.dat
+models/*.gguf
+models/imatrix/
+models/_hf_cache/
+models/_tmp/
+models/**/_dl_tmp/
+
+# Local runtime binaries (opsional jika diunduh lokal)
+tools/llama.cpp/
+
+# Runtime logs & temporary files
+logs/runtime/*.log
+logs/runtime/*.err
+*.tmp
+
+# OS / Editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

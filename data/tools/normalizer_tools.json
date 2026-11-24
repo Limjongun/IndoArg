@@ -1,0 +1,88 @@
+[
+  {
+    "type": "function",
+    "function": {
+      "name": "parse_waktu",
+      "description": "Mengubah ungkapan waktu/tanggal bahasa Indonesia sehari-hari menjadi format ISO-8601 (+07:00) atau tanggal YYYY-MM-DD.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "teks": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Ungkapan waktu atau tanggal dari pengguna (misal keterangan hari relatif, tanggal singkat, atau jam informal)"
+          },
+          "waktu_acuan": {
+            "type": "string",
+            "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\+07:00$",
+            "description": "Waktu acuan referensi dalam ISO-8601 WIB (+07:00)"
+          }
+        },
+        "required": ["teks", "waktu_acuan"],
+        "additionalProperties": false
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "parse_nominal",
+      "description": "Mengubah nominal uang bahasa sehari-hari, singkatan, kata bilangan, atau slang angka menjadi bilangan bulat rupiah.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "teks": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Ungkapan nominal uang yang perlu dinormalisasi ke bilangan bulat rupiah"
+          }
+        },
+        "required": ["teks"],
+        "additionalProperties": false
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "cari_wilayah",
+      "description": "Mencari kode wilayah resmi Kemendagri (XX.XX) dan nama resmi dari nama atau singkatan kota/kabupaten di Indonesia.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "teks": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Nama atau singkatan kota/kabupaten di Indonesia"
+          }
+        },
+        "required": ["teks"],
+        "additionalProperties": false
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "parse_satuan",
+      "description": "Mengonversi besaran berat, durasi, panjang, atau volume bahasa Indonesia ke satuan target kanonik.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "teks": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Ungkapan besaran berat, durasi, panjang, atau volume beserta satuannya"
+          },
+          "target": {
+            "type": "string",
+            "enum": ["gram", "menit", "meter", "mililiter"],
+            "description": "Satuan target kanonik"
+          }
+        },
+        "required": ["teks", "target"],
+        "additionalProperties": false
+      }
+    }
+  }
+]

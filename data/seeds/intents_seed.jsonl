@@ -1,0 +1,14 @@
+{"seed_id":"S001","tool_target":"buat_pengingat","idea":"Pengingat rapat besok jam 7 malam","categories":["waktu_relatif","jam_informal","code_mix"]}
+{"seed_id":"S002","tool_target":"buat_pengingat","idea":"Pengingat minum obat lusa setengah 8 pagi","categories":["waktu_relatif","jam_informal"]}
+{"seed_id":"S003","tool_target":"transfer_ewallet","idea":"Transfer gocap ke Rina via GoPay","categories":["nominal_slang","enum_merek"]}
+{"seed_id":"S004","tool_target":"transfer_ewallet","idea":"Transfer 1,5jt ke Dimas pakai Dana","categories":["nominal_singkat","enum_merek","code_mix"]}
+{"seed_id":"S005","tool_target":"cek_ongkir","idea":"Ongkir 2 kilo dari Surabaya ke Jaksel via JNE","categories":["lokasi_singkatan","satuan"]}
+{"seed_id":"S006","tool_target":"cek_ongkir","idea":"Ongkir setengah kilo dari Bandung ke Jogja via SiCepat","categories":["lokasi_singkatan","satuan","enum_merek"]}
+{"seed_id":"S007","tool_target":"jadwal_krl","idea":"KRL dari Depok ke Manggarai besok jam 8 pagi","categories":["waktu_relatif","lokasi_singkatan"]}
+{"seed_id":"S008","tool_target":"cek_cuaca","idea":"Prakiraan cuaca Semarang tanggal 25 November","categories":["lokasi_singkatan","tanggal_format"]}
+{"seed_id":"S009","tool_target":"pesan_ojek","idea":"Pesan ojol motor dari Stasiun Sudirman ke Blok M","categories":["enum_merek","code_mix"]}
+{"seed_id":"S010","tool_target":"konversi_kurs","idea":"Konversi dua ratus ribu rupiah ke USD","categories":["angka_kata","code_mix"]}
+{"seed_id":"S011","tool_target":"bayar_tagihan","idea":"Bayar listrik PLN 100rb untuk ID fiktif","categories":["nominal_singkat","enum_merek"]}
+{"seed_id":"S012","tool_target":"buat_jadwal_rapat","idea":"Jadwal rapat besok jam 3 sore durasi sejam setengah","categories":["waktu_relatif","jam_informal","angka_kata","satuan"]}
+{"seed_id":"S013","tool_target":"cari_dokumen","idea":"Cari 5 dokumen SOP reimburse perjalanan dinas","categories":["code_mix"]}
+{"seed_id":"S014","tool_target":null,"idea":"Pertanyaan pengetahuan umum ibu kota Jawa Timur","categories":["no_call"]}

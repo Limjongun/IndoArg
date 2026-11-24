@@ -1,0 +1,39 @@
+slang,nilai_dasar,nilai_rupiah_konteks_uang,catatan
+gocap,50,50000,slang Betawi; dalam transaksi uang umumnya Rp50.000
+goban,50000,50000,slang Betawi Rp50.000
+cepek,100,100000,slang Betawi; 100 atau Rp100.000 dalam transaksi uang
+cepek ceng,100000,100000,slang Betawi Rp100.000
+gopek,500,500000,slang Betawi; 500 atau Rp500.000 tergantung konteks transaksi
+gope,500,500000,variasi ejaan gopek
+seceng,1000,1000,slang Betawi Rp1.000
+jiceng,2000,2000,slang Betawi Rp2.000
+noceng,2000,2000,variasi slang Betawi Rp2.000
+samceng,3000,3000,slang Betawi Rp3.000
+siceng,4000,4000,slang Betawi Rp4.000
+goceng,5000,5000,slang Betawi Rp5.000
+lakceng,6000,6000,slang Betawi Rp6.000
+citceng,7000,7000,slang Betawi Rp7.000
+pekceng,8000,8000,slang Betawi Rp8.000
+kauceng,9000,9000,slang Betawi Rp9.000
+ceban,10000,10000,slang Betawi Rp10.000
+jiban,20000,20000,slang Betawi Rp20.000
+noban,20000,20000,variasi slang Betawi Rp20.000
+samban,30000,30000,slang Betawi Rp30.000
+siban,40000,40000,slang Betawi Rp40.000
+lakban,60000,60000,slang Betawi Rp60.000
+citban,70000,70000,slang Betawi Rp70.000
+pekban,80000,80000,slang Betawi Rp80.000
+kauban,90000,90000,slang Betawi Rp90.000
+cetiau,1000000,1000000,slang Betawi Rp1.000.000
+gotiau,5000000,5000000,slang Betawi Rp5.000.000
+sejuta,1000000,1000000,kata bilangan informal Rp1.000.000
+setengah juta,500000,500000,kata bilangan Rp500.000
+seperempat juta,250000,250000,kata bilangan Rp250.000
+seribu,1000,1000,kata bilangan Rp1.000
+seratus ribu,100000,100000,kata bilangan Rp100.000
+limapuluh ribu,50000,50000,tanpa spasi Rp50.000
+lima puluh ribu,50000,50000,kata bilangan Rp50.000
+dua puluh ribu,20000,20000,kata bilangan Rp20.000
+dua ratus ribu,200000,200000,kata bilangan Rp200.000
+tiga ratus ribu,300000,300000,kata bilangan Rp300.000
+lima ratus ribu,500000,500000,kata bilangan Rp500.000

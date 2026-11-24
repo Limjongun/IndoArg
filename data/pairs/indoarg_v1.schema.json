@@ -1,0 +1,110 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "IndoArg Pair Record v1",
+  "type": "object",
+  "required": [
+    "pair_id",
+    "split",
+    "tool_target",
+    "reference_time",
+    "variants",
+    "gold_call",
+    "value_categories",
+    "annotator",
+    "verified_by"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "pair_id": {
+      "type": "string",
+      "pattern": "^[PN][0-9]{4}$"
+    },
+    "split": {
+      "type": "string",
+      "enum": ["dev", "test"]
+    },
+    "tool_target": {
+      "type": ["string", "null"],
+      "enum": [
+        "buat_pengingat",
+        "transfer_ewallet",
+        "cek_ongkir",
+        "jadwal_krl",
+        "cek_cuaca",
+        "pesan_ojek",
+        "konversi_kurs",
+        "bayar_tagihan",
+        "buat_jadwal_rapat",
+        "cari_dokumen",
+        null
+      ]
+    },
+    "reference_time": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\+07:00$"
+    },
+    "variants": {
+      "type": "object",
+      "required": ["formal", "informal", "campur"],
+      "additionalProperties": false,
+      "properties": {
+        "formal": { "type": "string", "minLength": 5 },
+        "informal": { "type": "string", "minLength": 3 },
+        "campur": { "type": "string", "minLength": 3 }
+      }
+    },
+    "gold_call": {
+      "type": ["object", "null"],
+      "required": ["name", "arguments"],
+      "additionalProperties": false,
+      "properties": {
+        "name": { "type": "string", "minLength": 1 },
+        "arguments": { "type": "object" }
+      }
+    },
+    "strict_keys": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "soft_keys": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": ["method"],
+        "properties": {
+          "method": { "type": "string", "enum": ["casefold", "fuzzy", "set_casefold"] },
+          "threshold": { "type": "number", "minimum": 0, "maximum": 100 },
+          "aliases": { "type": "array", "items": { "type": "string" } }
+        },
+        "additionalProperties": false
+      }
+    },
+    "value_categories": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "enum": [
+          "waktu_relatif",
+          "jam_informal",
+          "tanggal_format",
+          "nominal_singkat",
+          "nominal_slang",
+          "angka_kata",
+          "lokasi_singkatan",
+          "satuan",
+          "enum_merek",
+          "code_mix",
+          "no_call"
+        ]
+      }
+    },
+    "difficulty": {
+      "type": "string",
+      "enum": ["mudah", "sedang", "sulit"]
+    },
+    "annotator": { "type": "string", "minLength": 1 },
+    "verified_by": { "type": "string", "minLength": 1 },
+    "notes": { "type": "string" }
+  }
+}

@@ -1,0 +1,6 @@
+Tahap 2 (Keluaran JSON Terstruktur):
+Berdasarkan permintaan pengguna dan hasil normalisasi pada Tahap 1, keluarkan tepat satu objek JSON yang valid sesuai skema:
+- Jika memanggil tool: {"name": "<nama_tool>", "arguments": { ... }}
+- Jika tidak membutuhkan tool: {"name": "no_call", "arguments": {}}
+
+Keluarkan HANYA objek JSON valid tanpa teks tambahan.

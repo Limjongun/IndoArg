@@ -1,0 +1,385 @@
+{
+  "model_id": "M5",
+  "model_name": "Apertus-SEA-LION-v4-8B-IT",
+  "server_model_info": {
+    "model_path": "models/Q4_K_M/M5.gguf",
+    "model_alias": "models/Q4_K_M/M5.gguf",
+    "v1_model_id": "models/Q4_K_M/M5.gguf"
+  },
+  "runtime": "llamacpp_server",
+  "runtime_version": "b11379-1537a0a8b",
+  "strategy": "S1",
+  "passed": true,
+  "parse_failures": 0,
+  "cvr": 14,
+  "tsa": 12,
+  "exa": 7,
+  "total": 14,
+  "items": [
+    {
+      "id": "SMK01",
+      "tool_target": "buat_pengingat",
+      "raw_output": "[{\"id\": \"0XxGqR1wbVDxi4pCLDiHzc3xtI6YFncX\", \"name\": \"buat_jadwal_rapat\", \"arguments\": {\"judul\": \"Rapat Besok Malam\", \"mulai\": \"2026-11-23T19:00:00+07:00\", \"durasi_menit\": 60, \"peserta\": [\"Rudi\", \"Lina\", \"Toni\"]}, \"raw_arguments\": \"{\\\"judul\\\": \\\"Rapat Besok Malam\\\", \\\"mulai\\\": \\\"2026-11-23T19:00:00+07:00\\\", \\\"durasi_menit\\\": 60, \\\"peserta\\\": [\\\"Rudi\\\", \\\"Lina\\\", \\\"Toni\\\"]}\"}]",
+      "parsed_call": {
+        "name": "buat_jadwal_rapat",
+        "arguments": {
+          "judul": "Rapat Besok Malam",
+          "mulai": "2026-11-23T19:00:00+07:00",
+          "durasi_menit": 60,
+          "peserta": [
+            "Rudi",
+            "Lina",
+            "Toni"
+          ]
+        }
+      },
+      "cvr": true,
+      "tsa": false,
+      "exa": false,
+      "error_codes": [
+        "E_TOOL"
+      ],
+      "value_correct": {},
+      "latency_ms": 99980.64,
+      "thinking_forced": false,
+      "error": null
+    },
+    {
+      "id": "SMK02",
+      "tool_target": "buat_pengingat",
+      "raw_output": "[{\"id\": \"3VJJ2YHOuJkikks4BTX5F3ydmsJ2WCfz\", \"name\": \"buat_pengingat\", \"arguments\": {\"judul\": \"Bayar Kos\", \"waktu\": \"2026-11-24T07:30:00+07:00\"}, \"raw_arguments\": \"{\\\"judul\\\": \\\"Bayar Kos\\\", \\\"waktu\\\": \\\"2026-11-24T07:30:00+07:00\\\"}\"}]",
+      "parsed_call": {
+        "name": "buat_pengingat",
+        "arguments": {
+          "judul": "Bayar Kos",
+          "waktu": "2026-11-24T07:30:00+07:00"
+        }
+      },
+      "cvr": true,
+      "tsa": true,
+      "exa": false,
+      "error_codes": [
+        "E_VALUE_WRONG"
+      ],
+      "value_correct": {
+        "judul": true,
+        "waktu": false
+      },
+      "latency_ms": 28186.41,
+      "thinking_forced": false,
+      "error": null
+    },
+    {
+      "id": "SMK03",
+      "tool_target": "transfer_ewallet",
+      "raw_output": "[{\"id\": \"Vjhjm7R9rVFt13iS6SX8FwUV37tCRzFe\", \"name\": \"transfer_ewallet\", \"arguments\": {\"penerima\": \"Rina\", \"nominal\": 10000, \"platform\": \"gopay\"}, \"raw_arguments\": \"{\\\"penerima\\\": \\\"Rina\\\", \\\"nominal\\\": 10000, \\\"platform\\\": \\\"gopay\\\"}\"}]",
+      "parsed_call": {
+        "name": "transfer_ewallet",
+        "arguments": {
+          "penerima": "Rina",
+          "nominal": 10000,
+          "platform": "gopay"
+        }
+      },
+      "cvr": true,
+      "tsa": true,
+      "exa": false,
+      "error_codes": [
+        "E_VALUE_WRONG"
+      ],
+      "value_correct": {
+        "penerima": true,
+        "nominal": false,
+        "platform": true
+      },
+      "latency_ms": 12974.07,
+      "thinking_forced": false,
+      "error": null
+    },
+    {
+      "id": "SMK04",
+      "tool_target": "transfer_ewallet",
+      "raw_output": "[{\"id\": \"tn2fBwCXhHdzDG13DX4mJe5XOBqTivuy\", \"name\": \"transfer_ewallet\", \"arguments\": {\"penerima\": \"Budi\", \"nominal\": 1500000, \"platform\": \"ovo\"}, \"raw_arguments\": \"{\\\"penerima\\\": \\\"Budi\\\", \\\"nominal\\\": 1500000, \\\"platform\\\": \\\"ovo\\\"}\"}]",
+      "parsed_call": {
+        "name": "transfer_ewallet",
+        "arguments": {
+          "penerima": "Budi",
+          "nominal": 1500000,
+          "platform": "ovo"
+        }
+      },
+      "cvr": true,
+      "tsa": true,
+      "exa": true,
+      "error_codes": [],
+      "value_correct": {
+        "penerima": true,
+        "nominal": true,
+        "platform": true
+      },
+      "latency_ms": 67501.58,
+      "thinking_forced": false,
+      "error": null
+    },
+    {
+      "id": "SMK05",
+      "tool_target": "cek_ongkir",
+      "raw_output": "[{\"id\": \"PjA2HFHSelGpqZxa9VhyJQo5AInU2BeD\", \"name\": \"cek_ongkir\", \"arguments\": {\"asal\": \"35.78\", \"tujuan\": \"31.74\", \"berat_gram\": 2000, \"kurir\": \"jne\"}, \"raw_arguments\": \"{\\\"asal\\\": \\\"35.78\\\", \\\"tujuan\\\": \\\"31.74\\\", \\\"berat_gram\\\": 2000, \\\"kurir\\\": \\\"jne\\\"}\"}]",
+      "parsed_call": {
+        "name": "cek_ongkir",
+        "arguments": {
+          "asal": "35.78",
+          "tujuan": "31.74",
+          "berat_gram": 2000,
+          "kurir": "jne"
+        }
+      },
+      "cvr": true,
+      "tsa": true,
+      "exa": true,
+      "error_codes": [],
+      "value_correct": {
+        "asal": true,
+        "tujuan": true,
+        "berat_gram": true,
+        "kurir": true
+      },
+      "latency_ms": 40462.2,
+      "thinking_forced": false,
+      "error": null
+    },
+    {
+      "id": "SMK06",
+      "tool_target": "cek_ongkir",
+      "raw_output": "[{\"id\": \"vF52GsgpoZD9o8N63ZV07IDPJdITDjDA\", \"name\": \"cek_ongkir\", \"arguments\": {\"asal\": \"56.32\", \"tujuan\": \"11.22\", \"berat_gram\": 500, \"kurir\": \"sicepat\"}, \"raw_arguments\": \"{\\\"asal\\\": \\\"56.32\\\", \\\"tujuan\\\": \\\"11.22\\\", \\\"berat_gram\\\": 500, \\\"kurir\\\": \\\"sicepat\\\"}\"}]",
+      "parsed_call": {
+        "name": "cek_ongkir",
+        "arguments": {
+          "asal": "56.32",
+          "tujuan": "11.22",
+          "berat_gram": 500,
+          "kurir": "sicepat"
+        }
+      },
+      "cvr": true,
+      "tsa": true,
+      "exa": false,
+      "error_codes": [
+        "E_VALUE_WRONG"
+      ],
+      "value_correct": {
+        "asal": false,
+        "tujuan": false,
+        "berat_gram": true,
+        "kurir": true
+      },
+      "latency_ms": 47718.0,
+      "thinking_forced": false,
+      "error": null
+    },
+    {
+      "id": "SMK07",
+      "tool_target": "jadwal_krl",
+      "raw_output": "[{\"id\": \"1aKe4gwAlH4adU9KPJJYl4Rg7oNq7F33\", \"name\": \"jadwal_krl\", \"arguments\": {\"stasiun_asal\": \"AK\", \"stasiun_tujuan\": \"MJ\", \"waktu\": \"2026-11-24T08:00:00+07:00\"}, \"raw_arguments\": \"{\\\"stasiun_asal\\\": \\\"AK\\\", \\\"stasiun_tujuan\\\": \\\"MJ\\\", \\\"waktu\\\": \\\"2026-11-24T08:00:00+07:00\\\"}\"}]",
+      "parsed_call": {
+        "name": "jadwal_krl",
+        "arguments": {
+          "stasiun_asal": "AK",
+          "stasiun_tujuan": "MJ",
+          "waktu": "2026-11-24T08:00:00+07:00"
+        }
+      },
+      "cvr": true,
+      "tsa": true,
+      "exa": false,
+      "error_codes": [
+        "E_VALUE_WRONG"
+      ],
+      "value_correct": {
+        "stasiun_asal": false,
+        "stasiun_tujuan": false,
+        "waktu": true
+      },
+      "latency_ms": 95066.64,
+      "thinking_forced": false,
+      "error": null
+    },
+    {
+      "id": "SMK08",
+      "tool_target": "cek_cuaca",
+      "raw_output": "[{\"id\": \"I98zmfBVoFWO0mfP10xOm5tGCp0IkoHg\", \"name\": \"cek_cuaca\", \"arguments\": {\"wilayah\": \"35.78\", \"tanggal\": \"2026-11-25\"}, \"raw_arguments\": \"{\\\"wilayah\\\": \\\"35.78\\\", \\\"tanggal\\\": \\\"2026-11-25\\\"}\"}]",
+      "parsed_call": {
+        "name": "cek_cuaca",
+        "arguments": {
+          "wilayah": "35.78",
+          "tanggal": "2026-11-25"
+        }
+      },
+      "cvr": true,
+      "tsa": true,
+      "exa": false,
+      "error_codes": [
+        "E_VALUE_WRONG"
+      ],
+      "value_correct": {
+        "wilayah": false,
+        "tanggal": true
+      },
+      "latency_ms": 50260.19,
+      "thinking_forced": false,
+      "error": null
+    },
+    {
+      "id": "SMK09",
+      "tool_target": "pesan_ojek",
+      "raw_output": "[{\"id\": \"vOQj7uWcRO57hZ5akGs6nrif47f2BUcm\", \"name\": \"pesan_ojek\", \"arguments\": {\"jemput\": \"Stasiun Sudirman\", \"tujuan\": \"Blok M\", \"layanan\": \"motor\"}, \"raw_arguments\": \"{\\\"jemput\\\": \\\"Stasiun Sudirman\\\", \\\"tujuan\\\": \\\"Blok M\\\", \\\"layanan\\\": \\\"motor\\\"}\"}]",
+      "parsed_call": {
+        "name": "pesan_ojek",
+        "arguments": {
+          "jemput": "Stasiun Sudirman",
+          "tujuan": "Blok M",
+          "layanan": "motor"
+        }
+      },
+      "cvr": true,
+      "tsa": true,
+      "exa": true,
+      "error_codes": [],
+      "value_correct": {
+        "jemput": true,
+        "tujuan": true,
+        "layanan": true
+      },
+      "latency_ms": 64737.27,
+      "thinking_forced": false,
+      "error": null
+    },
+    {
+      "id": "SMK10",
+      "tool_target": "konversi_kurs",
+      "raw_output": "[{\"id\": \"hdrTFZQXYezyP2u08xtwWvWfm8SiJU15\", \"name\": \"konversi_kurs\", \"arguments\": {\"jumlah\": 200000, \"dari\": \"IDR\", \"ke\": \"USD\"}, \"raw_arguments\": \"{\\\"jumlah\\\": 200000, \\\"dari\\\": \\\"IDR\\\", \\\"ke\\\": \\\"USD\\\"}\"}]",
+      "parsed_call": {
+        "name": "konversi_kurs",
+        "arguments": {
+          "jumlah": 200000,
+          "dari": "IDR",
+          "ke": "USD"
+        }
+      },
+      "cvr": true,
+      "tsa": true,
+      "exa": true,
+      "error_codes": [],
+      "value_correct": {
+        "jumlah": true,
+        "dari": true,
+        "ke": true
+      },
+      "latency_ms": 20949.99,
+      "thinking_forced": false,
+      "error": null
+    },
+    {
+      "id": "SMK11",
+      "tool_target": "bayar_tagihan",
+      "raw_output": "[{\"id\": \"e8FzTC6MGs1l9KXbj0o8IuN5eyhoLBh6\", \"name\": \"bayar_tagihan\", \"arguments\": {\"jenis\": \"pln\", \"id_pelanggan\": \"512345678901\", \"nominal\": 100000}, \"raw_arguments\": \"{\\\"jenis\\\": \\\"pln\\\", \\\"id_pelanggan\\\": \\\"512345678901\\\", \\\"nominal\\\": 100000}\"}]",
+      "parsed_call": {
+        "name": "bayar_tagihan",
+        "arguments": {
+          "jenis": "pln",
+          "id_pelanggan": "512345678901",
+          "nominal": 100000
+        }
+      },
+      "cvr": true,
+      "tsa": true,
+      "exa": true,
+      "error_codes": [],
+      "value_correct": {
+        "jenis": true,
+        "id_pelanggan": true,
+        "nominal": true
+      },
+      "latency_ms": 25618.34,
+      "thinking_forced": false,
+      "error": null
+    },
+    {
+      "id": "SMK12",
+      "tool_target": "buat_jadwal_rapat",
+      "raw_output": "[{\"id\": \"Dv5xf9itRuNnxKRGxtfSzardgncSsVJ6\", \"name\": \"buat_jadwal_rapat\", \"arguments\": {\"judul\": \"Review Q4\", \"mulai\": \"2026-11-24T15:00:00+07:00\", \"durasi_menit\": 90, \"peserta\": [\"Andi\", \"Sari\"]}, \"raw_arguments\": \"{\\\"judul\\\": \\\"Review Q4\\\", \\\"mulai\\\": \\\"2026-11-24T15:00:00+07:00\\\", \\\"durasi_menit\\\": 90, \\\"peserta\\\": [\\\"Andi\\\", \\\"Sari\\\"]}\"}]",
+      "parsed_call": {
+        "name": "buat_jadwal_rapat",
+        "arguments": {
+          "judul": "Review Q4",
+          "mulai": "2026-11-24T15:00:00+07:00",
+          "durasi_menit": 90,
+          "peserta": [
+            "Andi",
+            "Sari"
+          ]
+        }
+      },
+      "cvr": true,
+      "tsa": true,
+      "exa": true,
+      "error_codes": [],
+      "value_correct": {
+        "judul": true,
+        "mulai": true,
+        "durasi_menit": true,
+        "peserta": true
+      },
+      "latency_ms": 29321.29,
+      "thinking_forced": false,
+      "error": null
+    },
+    {
+      "id": "SMK13",
+      "tool_target": "cari_dokumen",
+      "raw_output": "[{\"id\": \"53RItS5fzEk3oMVOgePLkJvFusvywv4Q\", \"name\": \"cari_dokumen\", \"arguments\": {\"query\": \"kebijakan cuti tahunan\", \"top_k\": 5}, \"raw_arguments\": \"{\\\"query\\\": \\\"kebijakan cuti tahunan\\\", \\\"top_k\\\": 5}\"}]",
+      "parsed_call": {
+        "name": "cari_dokumen",
+        "arguments": {
+          "query": "kebijakan cuti tahunan",
+          "top_k": 5
+        }
+      },
+      "cvr": true,
+      "tsa": true,
+      "exa": true,
+      "error_codes": [],
+      "value_correct": {
+        "query": true,
+        "top_k": true
+      },
+      "latency_ms": 12456.06,
+      "thinking_forced": false,
+      "error": null
+    },
+    {
+      "id": "SMK14",
+      "tool_target": null,
+      "raw_output": "[{\"id\": \"CYmw0uT9QgQAZ2mIlsKzqQ7INexUC8hJ\", \"name\": \"cek_ongkir\", \"arguments\": {\"asal\": \"35.78\", \"tujuan\": \"31.74\", \"berat_gram\": 1000, \"kurir\": \"jne\"}, \"raw_arguments\": \"{\\\"asal\\\": \\\"35.78\\\", \\\"tujuan\\\": \\\"31.74\\\", \\\"berat_gram\\\": 1000, \\\"kurir\\\": \\\"jne\\\"}\"}]",
+      "parsed_call": {
+        "name": "cek_ongkir",
+        "arguments": {
+          "asal": "35.78",
+          "tujuan": "31.74",
+          "berat_gram": 1000,
+          "kurir": "jne"
+        }
+      },
+      "cvr": true,
+      "tsa": false,
+      "exa": false,
+      "error_codes": [
+        "E_OVERCALL"
+      ],
+      "value_correct": {},
+      "latency_ms": 14985.95,
+      "thinking_forced": false,
+      "error": null
+    }
+  ]
+}

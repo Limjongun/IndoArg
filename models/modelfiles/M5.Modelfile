@@ -1,0 +1,9 @@
+# Eksperimen C: Ollama memakai file GGUF lokal yang IDENTIK dengan llama.cpp (sha256 sama).
+# Jalankan dari root workspace:
+#   ollama create indoarg-m5-q4km -f models/modelfiles/M5.Modelfile
+FROM ../Q4_K_M/M5.gguf
+PARAMETER temperature 0
+PARAMETER top_p 1.0
+PARAMETER top_k 0
+PARAMETER repeat_penalty 1.0
+PARAMETER num_ctx 8192

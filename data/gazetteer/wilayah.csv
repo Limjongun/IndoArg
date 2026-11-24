@@ -1,0 +1,74 @@
+kode,nama_resmi,provinsi,tingkat
+11.71,Kota Banda Aceh,Aceh,kota
+12.71,Kota Medan,Sumatera Utara,kota
+13.71,Kota Padang,Sumatera Barat,kota
+14.71,Kota Pekanbaru,Riau,kota
+15.71,Kota Jambi,Jambi,kota
+16.71,Kota Palembang,Sumatera Selatan,kota
+17.71,Kota Bengkulu,Bengkulu,kota
+18.71,Kota Bandar Lampung,Lampung,kota
+19.71,Kota Pangkalpinang,Kepulauan Bangka Belitung,kota
+21.71,Kota Batam,Kepulauan Riau,kota
+21.72,Kota Tanjungpinang,Kepulauan Riau,kota
+31.01,Kabupaten Administrasi Kepulauan Seribu,DKI Jakarta,kabupaten
+31.71,Kota Administrasi Jakarta Pusat,DKI Jakarta,kota
+31.72,Kota Administrasi Jakarta Utara,DKI Jakarta,kota
+31.73,Kota Administrasi Jakarta Barat,DKI Jakarta,kota
+31.74,Kota Administrasi Jakarta Selatan,DKI Jakarta,kota
+31.75,Kota Administrasi Jakarta Timur,DKI Jakarta,kota
+32.01,Kabupaten Bogor,Jawa Barat,kabupaten
+32.04,Kabupaten Bandung,Jawa Barat,kabupaten
+32.16,Kabupaten Bekasi,Jawa Barat,kabupaten
+32.71,Kota Bogor,Jawa Barat,kota
+32.72,Kota Sukabumi,Jawa Barat,kota
+32.73,Kota Bandung,Jawa Barat,kota
+32.74,Kota Cirebon,Jawa Barat,kota
+32.75,Kota Bekasi,Jawa Barat,kota
+32.76,Kota Depok,Jawa Barat,kota
+32.77,Kota Cimahi,Jawa Barat,kota
+32.78,Kota Tasikmalaya,Jawa Barat,kota
+33.02,Kabupaten Banyumas,Jawa Tengah,kabupaten
+33.71,Kota Magelang,Jawa Tengah,kota
+33.72,Kota Surakarta,Jawa Tengah,kota
+33.73,Kota Salatiga,Jawa Tengah,kota
+33.74,Kota Semarang,Jawa Tengah,kota
+33.75,Kota Pekalongan,Jawa Tengah,kota
+33.76,Kota Tegal,Jawa Tengah,kota
+34.04,Kabupaten Sleman,DI Yogyakarta,kabupaten
+34.02,Kabupaten Bantul,DI Yogyakarta,kabupaten
+34.71,Kota Yogyakarta,DI Yogyakarta,kota
+35.07,Kabupaten Malang,Jawa Timur,kabupaten
+35.15,Kabupaten Sidoarjo,Jawa Timur,kabupaten
+35.25,Kabupaten Gresik,Jawa Timur,kabupaten
+35.71,Kota Kediri,Jawa Timur,kota
+35.72,Kota Blitar,Jawa Timur,kota
+35.73,Kota Malang,Jawa Timur,kota
+35.74,Kota Probolinggo,Jawa Timur,kota
+35.75,Kota Pasuruan,Jawa Timur,kota
+35.76,Kota Mojokerto,Jawa Timur,kota
+35.77,Kota Madiun,Jawa Timur,kota
+35.78,Kota Surabaya,Jawa Timur,kota
+35.79,Kota Batu,Jawa Timur,kota
+36.03,Kabupaten Tangerang,Banten,kabupaten
+36.71,Kota Tangerang,Banten,kota
+36.72,Kota Cilegon,Banten,kota
+36.73,Kota Serang,Banten,kota
+36.74,Kota Tangerang Selatan,Banten,kota
+51.03,Kabupaten Badung,Bali,kabupaten
+51.71,Kota Denpasar,Bali,kota
+52.71,Kota Mataram,Nusa Tenggara Barat,kota
+53.71,Kota Kupang,Nusa Tenggara Timur,kota
+61.71,Kota Pontianak,Kalimantan Barat,kota
+62.71,Kota Palangka Raya,Kalimantan Tengah,kota
+63.71,Kota Banjarmasin,Kalimantan Selatan,kota
+64.71,Kota Balikpapan,Kalimantan Timur,kota
+64.72,Kota Samarinda,Kalimantan Timur,kota
+65.71,Kota Tarakan,Kalimantan Utara,kota
+71.71,Kota Manado,Sulawesi Utara,kota
+72.71,Kota Palu,Sulawesi Tengah,kota
+73.71,Kota Makassar,Sulawesi Selatan,kota
+74.71,Kota Kendari,Sulawesi Tenggara,kota
+75.71,Kota Gorontalo,Gorontalo,kota
+81.71,Kota Ambon,Maluku,kota
+82.71,Kota Ternate,Maluku Utara,kota
+91.71,Kota Jayapura,Papua,kota
