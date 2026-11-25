@@ -1,0 +1,382 @@
+================================================================================
+DAFTAR MODEL, TIPE, KUANTISASI, ASAL-USUL, DAN SPESIFIKASI PARAMETER — INDOARG
+================================================================================
+Proyek        : IndoArg (Evaluasi Tool-Calling Bahasa Indonesia Sehari-hari)
+Tanggal Audit : 25 November 2026
+Sumber Data   : Header biner GGUF v3 aktual (models/Q4_K_M/M1..M5.gguf),
+                configs/models.yaml, configs/inference.yaml, dan
+                logs/quant_manifest_A_main.json
+Runtime Kunci : llama.cpp v0.5.0-dev (build b11379, commit 1537a0a8b, CUDA)
+                Ollama v0.40.17 (Eksperimen C)
+
+================================================================================
+1. RINGKASAN PANEL MODEL (EKSPERIMEN A & C — KUANTISASI SERAGAM Q4_K_M)
+================================================================================
++----+--------------------------+-----------+--------+-----------+--------+--------+----------+-----------------+
+| ID | Nama Model               | Arsitektur| Label  | Param     | Quant  | Ukuran | Context  | Quantizer /     |
+|    |                          | GGUF      | Ukuran | Eksak     | (GGUF) | File   | Native   | Metode          |
++----+--------------------------+-----------+--------+-----------+--------+--------+----------+-----------------+
+| M1 | Qwen3.5-4B               | qwen35    | 4B     | 4,326 B   | Q4_K_M | 3,01 GB| 262.144  | bartowski (imtx)|
+| M2 | Qwen3.5-9B               | qwen35    | 9B     | 9,197 B   | Q4_K_M | 6,17 GB| 262.144  | bartowski (imtx)|
+| M3 | Gemma-4-E4B-it           | gemma4    | 7.5B*  | 7,518 B*  | Q4_K_M | 5,41 GB| 131.072  | bartowski (imtx)|
+| M4 | Llama-3.2-3B-Instruct    | llama     | 3B     | 3,213 B   | Q4_K_M | 2,02 GB| 131.072  | bartowski (imtx)|
+| M5 | Apertus-SEA-LION-v4-8B-IT| apertus   | 8.1B   | 8,053 B   | Q4_K_M | 5,06 GB|  65.536  | AI Singapore    |
++----+--------------------------+-----------+--------+-----------+--------+--------+----------+-----------------+
+* Catatan M3 (Gemma-4-E4B-it): "E4B" berarti ~4,5B parameter aktif (Effective 4B)
+  saat inferensi, sedangkan total bobot di file GGUF adalah 7,518B karena
+  menyertakan tabel Per-Layer Embeddings (PLE) berukuran besar di setiap layer.
+* Singkatan (imtx) = dikuantisasi memakai Importance Matrix (imatrix).
+
+Semua 5 model telah lulus gerbang verifikasi kuantisasi seragam
+(scripts/01_verify_quant.py): seluruh file memiliki metadata GGUF
+general.file_type = 15 (MOSTLY_Q4_K_M), quantization_version = 2, dan
+memiliki embedded Jinja chat_template (dijalankan dengan flag --jinja).
+
+
+================================================================================
+2. PENJELASAN FORMAT GGUF & ARTI KUANTISASI (Q4_K_M DAN TANGGA EKSPERIMEN B)
+================================================================================
+- Format File      : GGUF v3 (GGML Unified Format), standar biner llama.cpp yang
+                     menyimpan bobot tensor, kosakata tokenizer, hyperparameter
+                     arsitektur, dan Jinja chat template dalam satu file.
+- Kuantisasi Utama : Q4_K_M (kode general.file_type = 15, MOSTLY_Q4_K_M).
+  Apa artinya "Q4_K_M"?
+  * Q4  = Mayoritas bobot matriks linear dikuantisasi ke presisi 4-bit (~4,5-4,8
+          bit efektif per parameter termasuk faktor skala blok).
+  * K   = K-Quant (super-block 256 bobot dengan sub-block scale terkuantisasi),
+          jauh lebih akurat daripada Q4_0 klasik.
+  * M   = Medium (campuran presisi adaptif): layer yang sensitif terhadap error
+          (seperti attention_v, feed_forward_down, output head, embedding)
+          dinaikkan ke Q5_K, Q6_K, atau Q8_0, sedangkan bobot normalisasi
+          (RMSNorm / bias / scale) dipertahankan di F32 (32-bit penuh).
+  * imatrix = Importance Matrix (kalibrasi aktivasi pada teks referensi agar
+          error kuantisasi minimal pada arah bobot yang paling berpengaruh).
+
+- Tangga Kuantisasi Eksperimen B (khusus M1 dan M3):
+  1. BF16   (code 32) : Brain Float 16-bit (tanpa kuantisasi integer; baseline atas)
+  2. Q8_0   (code 7)  : 8-bit integer blok standar (~hampir lossless vs BF16)
+  3. Q6_K   (code 18) : 6-bit K-quant (presisi tinggi)
+  4. Q4_K_M (code 15) : 4-bit K-quant medium (titik operasi utama laptop 6 GB VRAM)
+  5. Q3_K_M (code 12) : 3-bit K-quant medium (kompresi agresif untuk uji degradasi)
+
+
+================================================================================
+3. DETAIL LENGKAP TIAP MODEL (ASAL-USUL, TIPE, KUANTISASI, & PARAMETER)
+================================================================================
+
+--------------------------------------------------------------------------------
+[M1] Qwen3.5-4B
+--------------------------------------------------------------------------------
+1. Identitas & Peran di IndoArg
+   - Nama Resmi          : Qwen3.5 4B (Instruction / Chat-enabled)
+   - Keluarga            : Qwen (Generasi 3.5)
+   - Tipe Model          : Hybrid Linear-Attention + Full-Attention Causal LM
+                           (natively multimodal early-fusion image-text-to-text;
+                           hanya backbone teks GGUF dipakai di IndoArg)
+   - Peran Eksperimen    : Model kecil modern 4B (Eksperimen A, B, dan C)
+   - Lisensi             : Apache-2.0
+
+2. Asal-Usul & Silsilah Model
+   - Pengembang Asli     : Qwen Team, Alibaba Cloud (dirilis awal 2026)
+   - Base Model          : Qwen/Qwen3.5-4B-Base
+                           (https://huggingface.co/Qwen/Qwen3.5-4B-Base)
+   - Repo GGUF Sumber    : bartowski/Qwen_Qwen3.5-4B-GGUF
+                           (https://huggingface.co/bartowski/Qwen_Qwen3.5-4B-GGUF)
+   - Latar Belakang      : Bagian dari seri Qwen 3.5 yang mengganti sebagian besar
+                           attention kuadratik O(n^2) menjadi arsitektur hibrida
+                           3:1 Gated DeltaNet (75% linear attention bergaya
+                           associative-memory/SSM, 25% full Gated Attention).
+                           Mendukung >200 bahasa dan dialek termasuk bahasa
+                           Indonesia, serta memiliki mode penalaran ("thinking")
+                           yang dapat dimatikan lewat chat template.
+
+3. Detail Kuantisasi & File Lokal
+   - Lokasi File         : models/Q4_K_M/M1.gguf
+   - Tingkat Kuantisasi  : Q4_K_M (general.file_type = 15, version = 2)
+   - Ukuran File         : 3.013.027.808 byte (3,013 GB / 2,806 GiB)
+   - SHA-256             : 13c16f426047e2de38cd075bdade4a7bcbc8c774384876f677740cda65f8a983
+   - Kalibrasi imatrix   : Ya (bartowski — calibration_datav5.txt, 802 chunks,
+                           248 entries)
+   - Jumlah Tensor       : 441 tensor
+   - Komposisi Quant     : F32=232, Q4_K=124, Q6_K=49, Q8_0=20, Q5_K=16
+   - Mode Muat GPU       : Full GPU offload (-ngl 99) di RTX 4050 6 GB
+
+4. Spesifikasi Arsitektur & Parameter (dari Header GGUF)
+   - Jumlah Parameter    : 4.326.350.848 parameter (~4,33B; label 4B)
+   - Arsitektur GGUF     : qwen35
+   - Jumlah Blok/Layer   : 33 blok (termasuk 1 nextn_predict_layer)
+   - Pola Hibrida        : full_attention_interval = 4 (3 Gated DeltaNet : 1 Full Attn)
+   - Embedding Dim (d)   : 2.560
+   - Feed-Forward (FFN)  : 9.216
+   - Attention Heads     : 16 query heads / 4 KV heads (GQA 4:1)
+   - Key / Value Dim     : 256 / 256
+   - SSM / DeltaNet      : state_size=128, conv_kernel=4, group_count=16,
+                           time_step_rank=32, inner_size=4.096
+   - RoPE                : freq_base=10.000.000, dim=64, sections=[11,11,10,0]
+   - RMSNorm Epsilon     : 1e-6
+   - Context Length      : 262.144 token native (dibatasi 8.192 di IndoArg)
+   - Tokenizer & Vocab   : BPE (gpt2 / pre=qwen35), vocab = 248.320 token
+   - Chat Template       : Embedded Jinja (7.756 byte); thinking dimatikan via
+                           chat_template_kwargs.enable_thinking=false
+
+
+--------------------------------------------------------------------------------
+[M2] Qwen3.5-9B
+--------------------------------------------------------------------------------
+1. Identitas & Peran di IndoArg
+   - Nama Resmi          : Qwen3.5 9B (Instruction / Chat-enabled)
+   - Keluarga            : Qwen (Generasi 3.5)
+   - Tipe Model          : Hybrid Linear-Attention + Full-Attention Causal LM
+                           (natively multimodal early-fusion image-text-to-text)
+   - Peran Eksperimen    : Model menengah modern 9B — menguji efek penskalaan
+                           ukuran dalam keluarga yang sama terhadap M1 (4B)
+   - Lisensi             : Apache-2.0
+
+2. Asal-Usul & Silsilah Model
+   - Pengembang Asli     : Qwen Team, Alibaba Cloud (dirilis awal 2026)
+   - Base Model          : Qwen/Qwen3.5-9B-Base
+                           (https://huggingface.co/Qwen/Qwen3.5-9B-Base)
+   - Repo GGUF Sumber    : bartowski/Qwen_Qwen3.5-9B-GGUF
+                           (https://huggingface.co/bartowski/Qwen_Qwen3.5-9B-GGUF)
+   - Latar Belakang      : Varian berkapasitas lebih lebar (hidden dim 4.096 vs
+                           2.560 pada 4B) dari keluarga Qwen 3.5 dengan pola
+                           hibrida Gated DeltaNet 3:1 yang sama, dirancang untuk
+                           kapasitas penalaran dan pemahaman lintas bahasa lebih
+                           tinggi pada kelas <10B parameter.
+
+3. Detail Kuantisasi & File Lokal
+   - Lokasi File         : models/Q4_K_M/M2.gguf
+   - Tingkat Kuantisasi  : Q4_K_M (general.file_type = 15, version = 2)
+   - Ukuran File         : 6.169.341.984 byte (6,169 GB / 5,746 GiB)
+   - SHA-256             : d784ce9eda1a5a7b51e8f705a9e6310844bf4f173654d115823c775fdea56d43
+   - Kalibrasi imatrix   : Ya (bartowski — calibration_datav5.txt, 802 chunks,
+                           248 entries)
+   - Jumlah Tensor       : 442 tensor
+   - Komposisi Quant     : F32=232, Q4_K=125, Q6_K=49, Q8_0=20, Q5_K=16
+   - Mode Muat GPU       : Partial GPU/RAM offload (--fit on) di RTX 4050 6 GB
+
+4. Spesifikasi Arsitektur & Parameter (dari Header GGUF)
+   - Jumlah Parameter    : 9.197.093.888 parameter (~9,20B; label 9B)
+   - Arsitektur GGUF     : qwen35
+   - Jumlah Blok/Layer   : 33 blok (termasuk 1 nextn_predict_layer)
+   - Pola Hibrida        : full_attention_interval = 4 (3 Gated DeltaNet : 1 Full Attn)
+   - Embedding Dim (d)   : 4.096
+   - Feed-Forward (FFN)  : 12.288
+   - Attention Heads     : 16 query heads / 4 KV heads (GQA 4:1)
+   - Key / Value Dim     : 256 / 256
+   - SSM / DeltaNet      : state_size=128, conv_kernel=4, group_count=16,
+                           time_step_rank=32, inner_size=4.096
+   - RoPE                : freq_base=10.000.000, dim=64, sections=[11,11,10,0]
+   - RMSNorm Epsilon     : 1e-6
+   - Context Length      : 262.144 token native (dibatasi 8.192 di IndoArg)
+   - Tokenizer & Vocab   : BPE (gpt2 / pre=qwen35), vocab = 248.320 token
+   - Chat Template       : Embedded Jinja (7.756 byte); thinking dimatikan via
+                           chat_template_kwargs.enable_thinking=false
+
+
+--------------------------------------------------------------------------------
+[M3] Gemma-4-E4B-it
+--------------------------------------------------------------------------------
+1. Identitas & Peran di IndoArg
+   - Nama Resmi          : Gemma 4 E4B It (Instruction-Tuned)
+   - Keluarga            : Gemma (Generasi 4, lini Edge "E")
+   - Tipe Model          : Edge-Optimized Multimodal Transformer (any-to-any:
+                           teks, gambar, video, audio; backbone teks dipakai
+                           di IndoArg) dengan Per-Layer Embeddings (PLE)
+   - Peran Eksperimen    : Pembanding lintas keluarga arsitektur (Eksperimen A & B)
+   - Lisensi             : Apache-2.0
+
+2. Asal-Usul & Silsilah Model
+   - Pengembang Asli     : Google DeepMind
+   - Dokumentasi Resmi   : https://ai.google.dev/gemma/docs/capabilities/text/function-calling-gemma4
+   - Repo GGUF Sumber    : bartowski/google_gemma-4-E4B-it-GGUF
+                           (https://huggingface.co/bartowski/google_gemma-4-E4B-it-GGUF)
+   - Latar Belakang      : Generasi keempat keluarga terbuka Gemma dari Google
+                           DeepMind, dirancang khusus untuk perangkat lokal/edge.
+                           Menggunakan arsitektur Per-Layer Embeddings (PLE) dan
+                           Shared KV Layers sehingga komputasi aktif saat inferensi
+                           setara model ~4,5B ("Effective 4B" / E4B), sementara
+                           kapasitas memori totalnya mencapai 7,52B parameter.
+                           Memakai format function calling native khas Google:
+                           <|tool_call>call:nama{k:<|"|>v<|"|>}<tool_call|>.
+
+3. Detail Kuantisasi & File Lokal
+   - Lokasi File         : models/Q4_K_M/M3.gguf
+   - Tingkat Kuantisasi  : Q4_K_M (general.file_type = 15, version = 2)
+   - Ukuran File         : 5.405.170.144 byte (5,405 GB / 5,034 GiB)
+   - SHA-256             : d35a3aa7a6d47de237fd488bb6f7f3efd62908d828f85a63da0ee93acdbefe9f
+   - Kalibrasi imatrix   : Ya (bartowski — calibration_datav5.txt, 822 chunks,
+                           342 entries)
+   - Jumlah Tensor       : 720 tensor
+   - Komposisi Quant     : F32=339, Q4_K=231, Q5_K=84, Q6_K=65, BF16=1
+   - Mode Muat GPU       : Auto-fit (--fit on) di RTX 4050 6 GB
+
+4. Spesifikasi Arsitektur & Parameter (dari Header GGUF)
+   - Jumlah Parameter    : 7.518.069.290 parameter total (~7,52B; ~4,5B efektif aktif)
+   - Arsitektur GGUF     : gemma4
+   - Jumlah Blok/Layer   : 42 blok (18 shared KV layers; pola sliding-window + global)
+   - Embedding Dim (d)   : 2.560 (ditambah PLE input dim = 256 per layer)
+   - Feed-Forward (FFN)  : 10.240
+   - Attention Heads     : 8 query heads / 2 KV heads (GQA 4:1)
+   - Key / Value Dim     : 512 (global attention) / 256 (sliding-window attention)
+   - Sliding Window      : 512 token
+   - Final Logit Softcap : 30.0
+   - RoPE                : freq_base=1.000.000 (global), 10.000 (SWA);
+                           dim=512 (global), 256 (SWA)
+   - RMSNorm Epsilon     : 1e-6
+   - Context Length      : 131.072 token native (dibatasi 8.192 di IndoArg)
+   - Tokenizer & Vocab   : gemma4 (SentencePiece/BPE), vocab = 262.144 token
+   - Chat Template       : Embedded Jinja (18.569 byte)
+
+
+--------------------------------------------------------------------------------
+[M4] Llama-3.2-3B-Instruct
+--------------------------------------------------------------------------------
+1. Identitas & Peran di IndoArg
+   - Nama Resmi          : Llama 3.2 3B Instruct
+   - Keluarga            : Llama (Meta AI, generasi 3.2)
+   - Tipe Model          : Dense Decoder-Only Transformer (Text Generation,
+                           Instruction-Tuned)
+   - Peran Eksperimen    : Baseline generasi lama & batas bawah kapasitas (3B)
+   - Lisensi             : Llama 3.2 Community License
+
+2. Asal-Usul & Silsilah Model
+   - Pengembang Asli     : Meta AI (dirilis September 2024)
+   - Repo GGUF Sumber    : bartowski/Llama-3.2-3B-Instruct-GGUF
+                           (https://huggingface.co/bartowski/Llama-3.2-3B-Instruct-GGUF)
+   - Latar Belakang      : Model ringan Meta untuk perangkat edge/lokal yang
+                           dibangun melalui pruning terstruktur dan knowledge
+                           distillation dari Llama 3.1 8B dan 70B. Bahasa resmi
+                           yang didukung hanya 8 bahasa (en, de, fr, it, pt, hi,
+                           es, th) — bahasa Indonesia tidak masuk daftar bahasa
+                           resmi utama, sehingga sangat ideal sebagai baseline
+                           batas bawah untuk mengukur dampak bahasa informal
+                           Indonesia dan efek grammar-constrained decoding (S2).
+
+3. Detail Kuantisasi & File Lokal
+   - Lokasi File         : models/Q4_K_M/M4.gguf
+   - Tingkat Kuantisasi  : Q4_K_M (general.file_type = 15, version = 2)
+   - Ukuran File         : 2.019.377.696 byte (2,019 GB / 1,881 GiB)
+   - SHA-256             : 6c1a2b41161032677be168d354123594c0e6e67d2b9227c84f296ad037c728ff
+   - Kalibrasi imatrix   : Ya (bartowski — calibration_datav3.txt, 125 chunks,
+                           196 entries)
+   - Jumlah Tensor       : 255 tensor
+   - Komposisi Quant     : Q4_K=168, F32=58, Q6_K=29
+   - Mode Muat GPU       : Full GPU offload (-ngl 99) di RTX 4050 6 GB
+
+4. Spesifikasi Arsitektur & Parameter (dari Header GGUF)
+   - Jumlah Parameter    : 3.212.749.888 parameter (~3,21B; label 3B)
+   - Arsitektur GGUF     : llama
+   - Jumlah Blok/Layer   : 28 blok
+   - Embedding Dim (d)   : 3.072 (tied input/output embeddings)
+   - Feed-Forward (FFN)  : 8.192 (SwiGLU)
+   - Attention Heads     : 24 query heads / 8 KV heads (GQA 3:1)
+   - Key / Value Dim     : 128 / 128
+   - RoPE                : freq_base=500.000, dim=128
+   - RMSNorm Epsilon     : 1e-5
+   - Context Length      : 131.072 token native (dibatasi 8.192 di IndoArg)
+   - Tokenizer & Vocab   : tiktoken/BPE (gpt2 / pre=llama-bpe), vocab = 128.256
+   - Chat Template       : Embedded Jinja (3.827 byte)
+
+
+--------------------------------------------------------------------------------
+[M5] Apertus-SEA-LION-v4-8B-IT
+--------------------------------------------------------------------------------
+1. Identitas & Peran di IndoArg
+   - Nama Resmi          : Apertus-SEA-LION-v4-8B-IT (Instruction-Tuned)
+   - Keluarga            : SEA-LION v4 (berbasis arsitektur Apertus)
+   - Tipe Model          : Dense Decoder-Only Transformer dengan aktivasi xIELU
+                           (Regional Southeast Asian Instruction-Tuned LM)
+   - Peran Eksperimen    : Model regional spesialis bahasa Asia Tenggara &
+                           bahasa Indonesia (Eksperimen A dan C)
+   - Lisensi             : Apache-2.0
+
+2. Asal-Usul & Silsilah Model
+   - Pengembang Adaptasi : AI Singapore (AISG), didanai National Research
+                           Foundation (NRF) Singapura
+   - Model Fondasi Asal  : swiss-ai/Apertus-8B-Instruct-2509
+                           (https://huggingface.co/swiss-ai/Apertus-8B-Instruct-2509)
+                           dikembangkan oleh Swiss AI Initiative (konsorsium
+                           ETH Zurich, EPFL, dan CSCS Swiss National
+                           Supercomputing Centre) — model fully open & data-
+                           compliant yang dilatih pada >1.800 bahasa.
+   - Repo GGUF Sumber    : aisingapore/Apertus-SEA-LION-v4-8B-IT-GGUF
+                           (https://huggingface.co/collections/aisingapore/sea-lion-v4)
+   - Latar Belakang      : AI Singapore mengadaptasi Apertus-8B-Instruct-2509
+                           menjadi seri SEA-LION v4 melalui post-training /
+                           Supervised Fine-Tuning (SFT) pada ~6,4 juta pasangan
+                           instruksi bahasa Inggris dan bahasa-bahasa Asia
+                           Tenggara (Indonesia/Melayu, Myanmar, Tagalog, Tamil,
+                           dll.) untuk menangkap konteks linguistik dan budaya
+                           regional ASEAN.
+
+3. Detail Kuantisasi & File Lokal
+   - Lokasi File         : models/Q4_K_M/M5.gguf
+   - Tingkat Kuantisasi  : Q4_K_M (general.file_type = 15, version = 2)
+   - Ukuran File         : 5.057.884.448 byte (5,058 GB / 4,711 GiB)
+   - SHA-256             : 42b165ae51a35fb398fa8ea428a39477b5ad2b87bb3837c75b6e8566f8e2c25d
+   - Kalibrasi imatrix   : Tidak tercatat di header (dikuantisasi langsung oleh
+                           AI Singapore, bukan bartowski -> dicatat eksplisit
+                           sebagai catatan keterbatasan quantizer / opsi Mode
+                           Ketat §5.3)
+   - Jumlah Tensor       : 324 tensor
+   - Komposisi Quant     : Q4_K=161, F32=130, Q6_K=33
+   - Mode Muat GPU       : Partial GPU/RAM offload (--fit on) di RTX 4050 6 GB
+
+4. Spesifikasi Arsitektur & Parameter (dari Header GGUF)
+   - Jumlah Parameter    : 8.053.338.176 parameter (~8,05B; label 8.1B)
+   - Arsitektur GGUF     : apertus
+   - Fungsi Aktivasi     : xIELU (Expanded Integral Exponential Linear Unit —
+                           parameter alpha_n, alpha_p, beta, eps dipelajari per
+                           layer di seluruh 32 blok)
+   - Jumlah Blok/Layer   : 32 blok
+   - Embedding Dim (d)   : 4.096
+   - Feed-Forward (FFN)  : 21.504
+   - Attention Heads     : 32 query heads / 8 KV heads (GQA 4:1)
+   - Key / Value Dim     : 128 / 128
+   - RoPE                : freq_base=12.000.000, dim=128
+   - RMSNorm Epsilon     : 1e-5
+   - Context Length      : 65.536 token native (dibatasi 8.192 di IndoArg)
+   - Tokenizer & Vocab   : BPE (gpt2 / pre=tekken), vocab = 131.072 token
+   - Chat Template       : Embedded Jinja (13.218 byte)
+
+
+================================================================================
+4. PARAMETER INFERENSI TERKUNCI (SERAGAM UNTUK SEMUA MODEL & STRATEGI)
+================================================================================
+Sumber: configs/inference.yaml
+
+[Main Run — Greedy Deterministik]
+- temperature         : 0.0
+- top_p               : 1.0
+- top_k               : 0 (nonaktif)
+- min_p               : 0.0 (nonaktif)
+- repeat_penalty      : 1.0 (nonaktif)
+- max_tokens          : 512
+- n_ctx               : 8192
+- thinking            : "off" (chat_template_kwargs.enable_thinking=false)
+- stop                : [] (mengikuti EOS/stop token bawaan template model)
+- batch_concurrency   : 1 (--parallel 1 agar latensi & puncak VRAM terukur bersih)
+- Flash Attention     : -fa on
+- Template            : --jinja (menggunakan template tertanam pada GGUF)
+- Offload GPU         : -ngl 99 untuk model <= 4 GB (M1, M4);
+                        --fit on untuk model > 4 GB (M2, M3, M5) pada RTX 4050 6 GB
+
+[Sub-run Robustness — Opsional]
+- temperature         : 0.7
+- top_p               : 0.95
+- seeds               : [11, 22, 33]
+
+
+================================================================================
+5. PEMETAAN MODEL KE EKSPERIMEN & MODEL CADANGAN
+================================================================================
+- Eksperimen A (Utama, RQ1–RQ3)     : M1, M2, M3, M4, M5 @ Q4_K_M (S1–S4)
+- Eksperimen B (Kuantisasi, RQ4)    : M1, M3 @ [BF16, Q8_0, Q6_K, Q4_K_M, Q3_K_M]
+                                      (S1 + strategi terbaik dari Eksperimen A)
+- Eksperimen C (Runtime, RQ5)       : M1, M5 @ Q4_K_M identik (SHA-256 sama) pada
+                                      ollama_native (via Modelfile lokal) vs
+                                      llamacpp_jinja vs llamacpp_grammar
+- Model Cadangan (tidak dipakai     : Qwen3.5-2B (bartowski/unsloth) dan
+  karena M1–M5 lulus smoke test)      Gemma-SEA-LION-v4-4B-VL (AI Singapore)
+================================================================================

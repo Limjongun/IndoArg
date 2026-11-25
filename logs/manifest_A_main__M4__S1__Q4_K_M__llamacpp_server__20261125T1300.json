@@ -1,0 +1,100 @@
+{
+  "run_id": "A_main__M4__S1__Q4_K_M__llamacpp_server__20261125T1300",
+  "experiment": "A_main",
+  "model_id": "M4",
+  "model_name": "Llama-3.2-3B-Instruct",
+  "server_model_info": {
+    "model_path": "models\\Q4_K_M\\M4.gguf",
+    "model_alias": "models\\Q4_K_M\\M4.gguf",
+    "v1_model_id": "models\\Q4_K_M\\M4.gguf"
+  },
+  "quant": "Q4_K_M",
+  "gguf_sha256": "6c1a2b41161032677be168d354123594c0e6e67d2b9227c84f296ad037c728ff",
+  "runtime": "llamacpp_server",
+  "runtime_version": "b11379-1537a0a8b",
+  "strategy": "S1",
+  "split": "test",
+  "inference_yaml_sha256": "3be5564a8c8728e525ba61ba6c8c2bb7e68bf0c6d6727c3d677b72b8e79442ab",
+  "system_prompt_sha256": "fdfe42ac779fbfa2faabcfb9dbc85ac70246a4466744bcf6932f56d75b81396e",
+  "quant_manifest": [
+    {
+      "experiment": "A_main",
+      "expected_quant": "Q4_K_M",
+      "model": "M1",
+      "file": "models\\Q4_K_M\\M1.gguf",
+      "file_type": "Q4_K_M",
+      "sha256": "13c16f426047e2de38cd075bdade4a7bcbc8c774384876f677740cda65f8a983",
+      "size_bytes": 3013027808,
+      "mtime_ns": 1795476253984252900
+    },
+    {
+      "experiment": "A_main",
+      "expected_quant": "Q4_K_M",
+      "model": "M2",
+      "file": "models\\Q4_K_M\\M2.gguf",
+      "file_type": "Q4_K_M",
+      "sha256": "d784ce9eda1a5a7b51e8f705a9e6310844bf4f173654d115823c775fdea56d43",
+      "size_bytes": 6169341984,
+      "mtime_ns": 1795481719109715500
+    },
+    {
+      "experiment": "A_main",
+      "expected_quant": "Q4_K_M",
+      "model": "M3",
+      "file": "models\\Q4_K_M\\M3.gguf",
+      "file_type": "Q4_K_M",
+      "sha256": "d35a3aa7a6d47de237fd488bb6f7f3efd62908d828f85a63da0ee93acdbefe9f",
+      "size_bytes": 5405170144,
+      "mtime_ns": 1795486729456594400
+    },
+    {
+      "experiment": "A_main",
+      "expected_quant": "Q4_K_M",
+      "model": "M4",
+      "file": "models\\Q4_K_M\\M4.gguf",
+      "file_type": "Q4_K_M",
+      "sha256": "6c1a2b41161032677be168d354123594c0e6e67d2b9227c84f296ad037c728ff",
+      "size_bytes": 2019377696,
+      "mtime_ns": 1795488153877692300
+    },
+    {
+      "experiment": "A_main",
+      "expected_quant": "Q4_K_M",
+      "model": "M5",
+      "file": "models\\Q4_K_M\\M5.gguf",
+      "file_type": "Q4_K_M",
+      "sha256": "42b165ae51a35fb398fa8ea428a39477b5ad2b87bb3837c75b6e8566f8e2c25d",
+      "size_bytes": 5057884448,
+      "mtime_ns": 1795492035536821100
+    }
+  ],
+  "sysinfo": {
+    "timestamp_utc": "2026-11-25T06:00:21.823220+00:00",
+    "os": "Windows-10-10.0.26200-SP0",
+    "python": "3.11.9",
+    "cpu_count_logical": 12,
+    "ram_total_gb": 23.31,
+    "gpu": {
+      "driver_version": "616.56",
+      "gpus": [
+        {
+          "index": 0,
+          "name": "NVIDIA GeForce RTX 4050 Laptop GPU",
+          "vram_total_mb": 6141.0,
+          "vram_used_mb": 3829.2,
+          "vram_free_mb": 2311.8
+        }
+      ]
+    },
+    "runtimes": {
+      "llamacpp_bin": "C:\\Users\\ALIM\\AppData\\Local\\Microsoft\\WindowsApps\\llama.EXE",
+      "llamacpp_version": "version: 0.5.0-dev (build 11379, commit 1537a0a8b)\nbuilt with Clang 19.1.7 for Windows x86_64",
+      "ollama_bin": "C:\\Users\\ALIM\\AppData\\Local\\Programs\\Ollama\\ollama.EXE",
+      "ollama_version": "ollama version is 0.40.18"
+    },
+    "git": {
+      "commit": "dacc7083dbe69654d419cb9fdb5b817417caf86e",
+      "dirty": false
+    }
+  }
+}

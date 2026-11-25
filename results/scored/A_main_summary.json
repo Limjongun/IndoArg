@@ -1,0 +1,1151 @@
+{
+  "experiment": "A_main",
+  "runs": [
+    {
+      "run_id": "A_main__M1__S1__Q4_K_M__llamacpp_server__20261125T1451",
+      "experiment": "A_main",
+      "model_id": "M1",
+      "strategy": "S1",
+      "quant": "Q4_K_M",
+      "runtime": "llamacpp_server",
+      "metrics": {
+        "n_items": 528,
+        "n_call": 480,
+        "n_no_call": 48,
+        "CVR": 0.9729,
+        "TSA": 0.9938,
+        "EXA": 0.5871,
+        "EXA_call_only": 0.55,
+        "WVS": 0.4347,
+        "ABS": 0.9583,
+        "VA_by_category": {
+          "angka_kata": 0.8788,
+          "code_mix": 0.5848,
+          "enum_merek": 0.6543,
+          "jam_informal": 0.4167,
+          "lokasi_singkatan": 0.0148,
+          "no_call": 0.9583,
+          "nominal_singkat": 0.8687,
+          "nominal_slang": 0.619,
+          "satuan": 0.2444,
+          "tanggal_format": 0.2464,
+          "waktu_relatif": 0.3089
+        },
+        "EXA_by_register": {
+          "campur": 0.5739,
+          "formal": 0.6989,
+          "informal": 0.4886
+        },
+        "delta_register": {
+          "formal_minus_informal": 0.2102,
+          "formal_minus_campur": 0.125
+        },
+        "error_counts": {
+          "E_OVERCALL": 2,
+          "E_SCHEMA": 11,
+          "E_TOOL": 1,
+          "E_UNDERCALL": 2,
+          "E_VALUE_LANG": 8,
+          "E_VALUE_WRONG": 211
+        },
+        "efficiency": {
+          "latency_p50_ms": 1598.4,
+          "latency_p95_ms": 4273.79,
+          "mean_tokens_per_s": 44.79,
+          "vram_peak_mb": 4878.0,
+          "mean_steps": 0.0
+        }
+      },
+      "exa_bootstrap_ci": {
+        "mean": 0.5871,
+        "ci_low": 0.5227,
+        "ci_high": 0.6496
+      },
+      "delta_reg_ci": {
+        "formal_minus_informal": {
+          "delta": 0.2102,
+          "ci_low": 0.1477,
+          "ci_high": 0.2784,
+          "n_pairs": 176
+        },
+        "formal_minus_campur": {
+          "delta": 0.125,
+          "ci_low": 0.0739,
+          "ci_high": 0.1818,
+          "n_pairs": 176
+        }
+      }
+    },
+    {
+      "run_id": "A_main__M1__S2__Q4_K_M__llamacpp_server__20261125T1509",
+      "experiment": "A_main",
+      "model_id": "M1",
+      "strategy": "S2",
+      "quant": "Q4_K_M",
+      "runtime": "llamacpp_server",
+      "metrics": {
+        "n_items": 528,
+        "n_call": 480,
+        "n_no_call": 48,
+        "CVR": 0.9583,
+        "TSA": 0.9958,
+        "EXA": 0.5795,
+        "EXA_call_only": 0.5375,
+        "WVS": 0.4391,
+        "ABS": 1.0,
+        "VA_by_category": {
+          "angka_kata": 0.8864,
+          "code_mix": 0.5771,
+          "enum_merek": 0.6543,
+          "jam_informal": 0.4,
+          "lokasi_singkatan": 0.0148,
+          "no_call": 1.0,
+          "nominal_singkat": 0.8384,
+          "nominal_slang": 0.5397,
+          "satuan": 0.2556,
+          "tanggal_format": 0.2464,
+          "waktu_relatif": 0.2846
+        },
+        "EXA_by_register": {
+          "campur": 0.5625,
+          "formal": 0.6989,
+          "informal": 0.4773
+        },
+        "delta_register": {
+          "formal_minus_informal": 0.2216,
+          "formal_minus_campur": 0.1364
+        },
+        "error_counts": {
+          "E_SCHEMA": 19,
+          "E_TOOL": 1,
+          "E_UNDERCALL": 1,
+          "E_VALUE_WRONG": 220
+        },
+        "efficiency": {
+          "latency_p50_ms": 1001.43,
+          "latency_p95_ms": 1821.37,
+          "mean_tokens_per_s": 45.51,
+          "vram_peak_mb": 4726.7,
+          "mean_steps": 0.0
+        }
+      },
+      "exa_bootstrap_ci": {
+        "mean": 0.5795,
+        "ci_low": 0.5152,
+        "ci_high": 0.642
+      },
+      "delta_reg_ci": {
+        "formal_minus_informal": {
+          "delta": 0.2216,
+          "ci_low": 0.1591,
+          "ci_high": 0.2841,
+          "n_pairs": 176
+        },
+        "formal_minus_campur": {
+          "delta": 0.1364,
+          "ci_low": 0.0852,
+          "ci_high": 0.1932,
+          "n_pairs": 176
+        }
+      }
+    },
+    {
+      "run_id": "A_main__M1__S3__Q4_K_M__llamacpp_server__20261125T1518",
+      "experiment": "A_main",
+      "model_id": "M1",
+      "strategy": "S3",
+      "quant": "Q4_K_M",
+      "runtime": "llamacpp_server",
+      "metrics": {
+        "n_items": 528,
+        "n_call": 480,
+        "n_no_call": 48,
+        "CVR": 0.9521,
+        "TSA": 0.9625,
+        "EXA": 0.5625,
+        "EXA_call_only": 0.5188,
+        "WVS": 0.4551,
+        "ABS": 1.0,
+        "VA_by_category": {
+          "angka_kata": 0.8333,
+          "code_mix": 0.56,
+          "enum_merek": 0.6173,
+          "jam_informal": 0.3583,
+          "lokasi_singkatan": 0.0296,
+          "no_call": 1.0,
+          "nominal_singkat": 0.8283,
+          "nominal_slang": 0.5714,
+          "satuan": 0.2222,
+          "tanggal_format": 0.2319,
+          "waktu_relatif": 0.2927
+        },
+        "EXA_by_register": {
+          "campur": 0.5682,
+          "formal": 0.6932,
+          "informal": 0.4261
+        },
+        "delta_register": {
+          "formal_minus_informal": 0.267,
+          "formal_minus_campur": 0.125
+        },
+        "error_counts": {
+          "E_SCHEMA": 6,
+          "E_TOOL": 1,
+          "E_UNDERCALL": 17,
+          "E_VALUE_WRONG": 213
+        },
+        "efficiency": {
+          "latency_p50_ms": 2717.03,
+          "latency_p95_ms": 5622.36,
+          "mean_tokens_per_s": 45.29,
+          "vram_peak_mb": 4915.8,
+          "mean_steps": 2.0
+        }
+      },
+      "exa_bootstrap_ci": {
+        "mean": 0.5625,
+        "ci_low": 0.5019,
+        "ci_high": 0.6231
+      },
+      "delta_reg_ci": {
+        "formal_minus_informal": {
+          "delta": 0.267,
+          "ci_low": 0.1932,
+          "ci_high": 0.3409,
+          "n_pairs": 176
+        },
+        "formal_minus_campur": {
+          "delta": 0.125,
+          "ci_low": 0.0682,
+          "ci_high": 0.1818,
+          "n_pairs": 176
+        }
+      }
+    },
+    {
+      "run_id": "A_main__M1__S4__Q4_K_M__llamacpp_server__20261125T1546",
+      "experiment": "A_main",
+      "model_id": "M1",
+      "strategy": "S4",
+      "quant": "Q4_K_M",
+      "runtime": "llamacpp_server",
+      "metrics": {
+        "n_items": 528,
+        "n_call": 480,
+        "n_no_call": 48,
+        "CVR": 0.9583,
+        "TSA": 0.975,
+        "EXA": 0.822,
+        "EXA_call_only": 0.8042,
+        "WVS": 0.1609,
+        "ABS": 1.0,
+        "VA_by_category": {
+          "angka_kata": 0.9545,
+          "code_mix": 0.821,
+          "enum_merek": 0.858,
+          "jam_informal": 0.675,
+          "lokasi_singkatan": 0.637,
+          "no_call": 1.0,
+          "nominal_singkat": 0.9192,
+          "nominal_slang": 0.6825,
+          "satuan": 0.9,
+          "tanggal_format": 0.7971,
+          "waktu_relatif": 0.5854
+        },
+        "EXA_by_register": {
+          "campur": 0.8409,
+          "formal": 0.9091,
+          "informal": 0.7159
+        },
+        "delta_register": {
+          "formal_minus_informal": 0.1932,
+          "formal_minus_campur": 0.0682
+        },
+        "error_counts": {
+          "E_PARSE": 2,
+          "E_SCHEMA": 9,
+          "E_TOOL": 1,
+          "E_UNDERCALL": 9,
+          "E_VALUE_LANG": 8,
+          "E_VALUE_WRONG": 76
+        },
+        "efficiency": {
+          "latency_p50_ms": 2098.36,
+          "latency_p95_ms": 5188.88,
+          "mean_tokens_per_s": 45.22,
+          "vram_peak_mb": 4741.1,
+          "mean_steps": 0.65
+        }
+      },
+      "exa_bootstrap_ci": {
+        "mean": 0.822,
+        "ci_low": 0.7765,
+        "ci_high": 0.8636
+      },
+      "delta_reg_ci": {
+        "formal_minus_informal": {
+          "delta": 0.1932,
+          "ci_low": 0.1307,
+          "ci_high": 0.2614,
+          "n_pairs": 176
+        },
+        "formal_minus_campur": {
+          "delta": 0.0682,
+          "ci_low": 0.0284,
+          "ci_high": 0.1136,
+          "n_pairs": 176
+        }
+      }
+    },
+    {
+      "run_id": "A_main__M3__S1__Q4_K_M__llamacpp_server__20261125T1349",
+      "experiment": "A_main",
+      "model_id": "M3",
+      "strategy": "S1",
+      "quant": "Q4_K_M",
+      "runtime": "llamacpp_server",
+      "metrics": {
+        "n_items": 528,
+        "n_call": 480,
+        "n_no_call": 48,
+        "CVR": 0.9563,
+        "TSA": 0.9979,
+        "EXA": 0.6553,
+        "EXA_call_only": 0.6229,
+        "WVS": 0.3486,
+        "ABS": 0.9792,
+        "VA_by_category": {
+          "angka_kata": 0.9167,
+          "code_mix": 0.6533,
+          "enum_merek": 0.6667,
+          "jam_informal": 0.6667,
+          "lokasi_singkatan": 0.0519,
+          "no_call": 0.9792,
+          "nominal_singkat": 0.8788,
+          "nominal_slang": 0.6667,
+          "satuan": 0.3889,
+          "tanggal_format": 0.3768,
+          "waktu_relatif": 0.4959
+        },
+        "EXA_by_register": {
+          "campur": 0.6761,
+          "formal": 0.7159,
+          "informal": 0.5739
+        },
+        "delta_register": {
+          "formal_minus_informal": 0.142,
+          "formal_minus_campur": 0.0398
+        },
+        "error_counts": {
+          "E_OVERCALL": 1,
+          "E_SCHEMA": 20,
+          "E_UNDERCALL": 1,
+          "E_VALUE_LANG": 10,
+          "E_VALUE_WRONG": 172
+        },
+        "efficiency": {
+          "latency_p50_ms": 1213.94,
+          "latency_p95_ms": 2015.29,
+          "mean_tokens_per_s": 41.76,
+          "vram_peak_mb": 4651.8,
+          "mean_steps": 0.0
+        }
+      },
+      "exa_bootstrap_ci": {
+        "mean": 0.6553,
+        "ci_low": 0.5909,
+        "ci_high": 0.7159
+      },
+      "delta_reg_ci": {
+        "formal_minus_informal": {
+          "delta": 0.142,
+          "ci_low": 0.0852,
+          "ci_high": 0.2045,
+          "n_pairs": 176
+        },
+        "formal_minus_campur": {
+          "delta": 0.0398,
+          "ci_low": -0.0057,
+          "ci_high": 0.0852,
+          "n_pairs": 176
+        }
+      }
+    },
+    {
+      "run_id": "A_main__M3__S2__Q4_K_M__llamacpp_server__20261125T1401",
+      "experiment": "A_main",
+      "model_id": "M3",
+      "strategy": "S2",
+      "quant": "Q4_K_M",
+      "runtime": "llamacpp_server",
+      "metrics": {
+        "n_items": 528,
+        "n_call": 480,
+        "n_no_call": 48,
+        "CVR": 0.9812,
+        "TSA": 0.9979,
+        "EXA": 0.678,
+        "EXA_call_only": 0.6458,
+        "WVS": 0.3418,
+        "ABS": 1.0,
+        "VA_by_category": {
+          "angka_kata": 0.9242,
+          "code_mix": 0.6762,
+          "enum_merek": 0.6914,
+          "jam_informal": 0.675,
+          "lokasi_singkatan": 0.0889,
+          "no_call": 1.0,
+          "nominal_singkat": 0.8889,
+          "nominal_slang": 0.6825,
+          "satuan": 0.4,
+          "tanggal_format": 0.3913,
+          "waktu_relatif": 0.5366
+        },
+        "EXA_by_register": {
+          "campur": 0.6932,
+          "formal": 0.733,
+          "informal": 0.608
+        },
+        "delta_register": {
+          "formal_minus_informal": 0.125,
+          "formal_minus_campur": 0.0398
+        },
+        "error_counts": {
+          "E_SCHEMA": 8,
+          "E_UNDERCALL": 1,
+          "E_VALUE_WRONG": 169
+        },
+        "efficiency": {
+          "latency_p50_ms": 1088.67,
+          "latency_p95_ms": 1999.61,
+          "mean_tokens_per_s": 41.62,
+          "vram_peak_mb": 4238.9,
+          "mean_steps": 0.0
+        }
+      },
+      "exa_bootstrap_ci": {
+        "mean": 0.678,
+        "ci_low": 0.6136,
+        "ci_high": 0.7386
+      },
+      "delta_reg_ci": {
+        "formal_minus_informal": {
+          "delta": 0.125,
+          "ci_low": 0.0682,
+          "ci_high": 0.1818,
+          "n_pairs": 176
+        },
+        "formal_minus_campur": {
+          "delta": 0.0398,
+          "ci_low": 0.0,
+          "ci_high": 0.0852,
+          "n_pairs": 176
+        }
+      }
+    },
+    {
+      "run_id": "A_main__M3__S3__Q4_K_M__llamacpp_server__20261125T1412",
+      "experiment": "A_main",
+      "model_id": "M3",
+      "strategy": "S3",
+      "quant": "Q4_K_M",
+      "runtime": "llamacpp_server",
+      "metrics": {
+        "n_items": 528,
+        "n_call": 480,
+        "n_no_call": 48,
+        "CVR": 0.9313,
+        "TSA": 0.9542,
+        "EXA": 0.6345,
+        "EXA_call_only": 0.5979,
+        "WVS": 0.3579,
+        "ABS": 1.0,
+        "VA_by_category": {
+          "angka_kata": 0.8939,
+          "code_mix": 0.6324,
+          "enum_merek": 0.5802,
+          "jam_informal": 0.675,
+          "lokasi_singkatan": 0.0963,
+          "no_call": 1.0,
+          "nominal_singkat": 0.8485,
+          "nominal_slang": 0.6508,
+          "satuan": 0.3778,
+          "tanggal_format": 0.3913,
+          "waktu_relatif": 0.5285
+        },
+        "EXA_by_register": {
+          "campur": 0.6193,
+          "formal": 0.733,
+          "informal": 0.5511
+        },
+        "delta_register": {
+          "formal_minus_informal": 0.1818,
+          "formal_minus_campur": 0.1136
+        },
+        "error_counts": {
+          "E_SCHEMA": 12,
+          "E_TOOL": 1,
+          "E_UNDERCALL": 21,
+          "E_VALUE_WRONG": 171
+        },
+        "efficiency": {
+          "latency_p50_ms": 1947.28,
+          "latency_p95_ms": 3820.59,
+          "mean_tokens_per_s": 41.48,
+          "vram_peak_mb": 4629.8,
+          "mean_steps": 2.0
+        }
+      },
+      "exa_bootstrap_ci": {
+        "mean": 0.6345,
+        "ci_low": 0.572,
+        "ci_high": 0.6932
+      },
+      "delta_reg_ci": {
+        "formal_minus_informal": {
+          "delta": 0.1818,
+          "ci_low": 0.1193,
+          "ci_high": 0.2443,
+          "n_pairs": 176
+        },
+        "formal_minus_campur": {
+          "delta": 0.1136,
+          "ci_low": 0.0625,
+          "ci_high": 0.1705,
+          "n_pairs": 176
+        }
+      }
+    },
+    {
+      "run_id": "A_main__M3__S4__Q4_K_M__llamacpp_server__20261125T1432",
+      "experiment": "A_main",
+      "model_id": "M3",
+      "strategy": "S4",
+      "quant": "Q4_K_M",
+      "runtime": "llamacpp_server",
+      "metrics": {
+        "n_items": 528,
+        "n_call": 480,
+        "n_no_call": 48,
+        "CVR": 0.9437,
+        "TSA": 0.9958,
+        "EXA": 0.8504,
+        "EXA_call_only": 0.8375,
+        "WVS": 0.1126,
+        "ABS": 0.9792,
+        "VA_by_category": {
+          "angka_kata": 0.9773,
+          "code_mix": 0.8495,
+          "enum_merek": 0.8642,
+          "jam_informal": 0.7167,
+          "lokasi_singkatan": 0.6963,
+          "no_call": 0.9792,
+          "nominal_singkat": 0.899,
+          "nominal_slang": 0.6984,
+          "satuan": 0.8889,
+          "tanggal_format": 0.8261,
+          "waktu_relatif": 0.6992
+        },
+        "EXA_by_register": {
+          "campur": 0.8807,
+          "formal": 0.9148,
+          "informal": 0.7557
+        },
+        "delta_register": {
+          "formal_minus_informal": 0.1591,
+          "formal_minus_campur": 0.0341
+        },
+        "error_counts": {
+          "E_OVERCALL": 1,
+          "E_SCHEMA": 26,
+          "E_TOOL": 1,
+          "E_UNDERCALL": 1,
+          "E_VALUE_LANG": 13,
+          "E_VALUE_WRONG": 65
+        },
+        "efficiency": {
+          "latency_p50_ms": 1428.16,
+          "latency_p95_ms": 3716.66,
+          "mean_tokens_per_s": 40.42,
+          "vram_peak_mb": 5244.6,
+          "mean_steps": 0.59
+        }
+      },
+      "exa_bootstrap_ci": {
+        "mean": 0.8504,
+        "ci_low": 0.8087,
+        "ci_high": 0.8883
+      },
+      "delta_reg_ci": {
+        "formal_minus_informal": {
+          "delta": 0.1591,
+          "ci_low": 0.0966,
+          "ci_high": 0.2216,
+          "n_pairs": 176
+        },
+        "formal_minus_campur": {
+          "delta": 0.0341,
+          "ci_low": -0.0057,
+          "ci_high": 0.0739,
+          "n_pairs": 176
+        }
+      }
+    },
+    {
+      "run_id": "A_main__M4__S1__Q4_K_M__llamacpp_server__20261125T1300",
+      "experiment": "A_main",
+      "model_id": "M4",
+      "strategy": "S1",
+      "quant": "Q4_K_M",
+      "runtime": "llamacpp_server",
+      "metrics": {
+        "n_items": 528,
+        "n_call": 480,
+        "n_no_call": 48,
+        "CVR": 0.2208,
+        "TSA": 0.9417,
+        "EXA": 0.1042,
+        "EXA_call_only": 0.1146,
+        "WVS": 0.4811,
+        "ABS": 0.0,
+        "VA_by_category": {
+          "angka_kata": 0.0,
+          "code_mix": 0.1048,
+          "enum_merek": 0.1975,
+          "jam_informal": 0.1917,
+          "lokasi_singkatan": 0.0074,
+          "no_call": 0.0,
+          "nominal_singkat": 0.0,
+          "nominal_slang": 0.0,
+          "satuan": 0.0,
+          "tanggal_format": 0.087,
+          "waktu_relatif": 0.1382
+        },
+        "EXA_by_register": {
+          "campur": 0.0682,
+          "formal": 0.1705,
+          "informal": 0.0739
+        },
+        "delta_register": {
+          "formal_minus_informal": 0.0966,
+          "formal_minus_campur": 0.1023
+        },
+        "error_counts": {
+          "E_HALLUC_ARG": 1,
+          "E_OVERCALL": 48,
+          "E_SCHEMA": 370,
+          "E_TOOL": 24,
+          "E_UNDERCALL": 4,
+          "E_VALUE_FORMAT": 95,
+          "E_VALUE_LANG": 54,
+          "E_VALUE_WRONG": 289
+        },
+        "efficiency": {
+          "latency_p50_ms": 686.96,
+          "latency_p95_ms": 1189.04,
+          "mean_tokens_per_s": 63.35,
+          "vram_peak_mb": 4004.7,
+          "mean_steps": 0.0
+        }
+      },
+      "exa_bootstrap_ci": {
+        "mean": 0.1042,
+        "ci_low": 0.0682,
+        "ci_high": 0.1439
+      },
+      "delta_reg_ci": {
+        "formal_minus_informal": {
+          "delta": 0.0966,
+          "ci_low": 0.0568,
+          "ci_high": 0.142,
+          "n_pairs": 176
+        },
+        "formal_minus_campur": {
+          "delta": 0.1023,
+          "ci_low": 0.0568,
+          "ci_high": 0.1477,
+          "n_pairs": 176
+        }
+      }
+    },
+    {
+      "run_id": "A_main__M4__S2__Q4_K_M__llamacpp_server__20261125T1307",
+      "experiment": "A_main",
+      "model_id": "M4",
+      "strategy": "S2",
+      "quant": "Q4_K_M",
+      "runtime": "llamacpp_server",
+      "metrics": {
+        "n_items": 528,
+        "n_call": 480,
+        "n_no_call": 48,
+        "CVR": 0.9833,
+        "TSA": 0.9646,
+        "EXA": 0.4205,
+        "EXA_call_only": 0.4396,
+        "WVS": 0.553,
+        "ABS": 0.2292,
+        "VA_by_category": {
+          "angka_kata": 0.6742,
+          "code_mix": 0.4229,
+          "enum_merek": 0.4568,
+          "jam_informal": 0.4083,
+          "lokasi_singkatan": 0.0667,
+          "no_call": 0.2292,
+          "nominal_singkat": 0.5657,
+          "nominal_slang": 0.4444,
+          "satuan": 0.2111,
+          "tanggal_format": 0.2464,
+          "waktu_relatif": 0.3008
+        },
+        "EXA_by_register": {
+          "campur": 0.3807,
+          "formal": 0.625,
+          "informal": 0.2557
+        },
+        "delta_register": {
+          "formal_minus_informal": 0.3693,
+          "formal_minus_campur": 0.2443
+        },
+        "error_counts": {
+          "E_OVERCALL": 37,
+          "E_SCHEMA": 8,
+          "E_TOOL": 17,
+          "E_VALUE_WRONG": 252
+        },
+        "efficiency": {
+          "latency_p50_ms": 659.71,
+          "latency_p95_ms": 1160.43,
+          "mean_tokens_per_s": 63.08,
+          "vram_peak_mb": 3993.1,
+          "mean_steps": 0.0
+        }
+      },
+      "exa_bootstrap_ci": {
+        "mean": 0.4205,
+        "ci_low": 0.3674,
+        "ci_high": 0.4735
+      },
+      "delta_reg_ci": {
+        "formal_minus_informal": {
+          "delta": 0.3693,
+          "ci_low": 0.2955,
+          "ci_high": 0.4432,
+          "n_pairs": 176
+        },
+        "formal_minus_campur": {
+          "delta": 0.2443,
+          "ci_low": 0.1705,
+          "ci_high": 0.3239,
+          "n_pairs": 176
+        }
+      }
+    },
+    {
+      "run_id": "A_main__M4__S3__Q4_K_M__llamacpp_server__20261125T1314",
+      "experiment": "A_main",
+      "model_id": "M4",
+      "strategy": "S3",
+      "quant": "Q4_K_M",
+      "runtime": "llamacpp_server",
+      "metrics": {
+        "n_items": 528,
+        "n_call": 480,
+        "n_no_call": 48,
+        "CVR": 0.9417,
+        "TSA": 0.8917,
+        "EXA": 0.3314,
+        "EXA_call_only": 0.3312,
+        "WVS": 0.6482,
+        "ABS": 0.3333,
+        "VA_by_category": {
+          "angka_kata": 0.5,
+          "code_mix": 0.3314,
+          "enum_merek": 0.3642,
+          "jam_informal": 0.3417,
+          "lokasi_singkatan": 0.0148,
+          "no_call": 0.3333,
+          "nominal_singkat": 0.4747,
+          "nominal_slang": 0.4286,
+          "satuan": 0.2,
+          "tanggal_format": 0.2174,
+          "waktu_relatif": 0.2276
+        },
+        "EXA_by_register": {
+          "campur": 0.2784,
+          "formal": 0.517,
+          "informal": 0.1989
+        },
+        "delta_register": {
+          "formal_minus_informal": 0.3182,
+          "formal_minus_campur": 0.2386
+        },
+        "error_counts": {
+          "E_OVERCALL": 32,
+          "E_SCHEMA": 8,
+          "E_TOOL": 32,
+          "E_UNDERCALL": 20,
+          "E_VALUE_WRONG": 269
+        },
+        "efficiency": {
+          "latency_p50_ms": 1708.62,
+          "latency_p95_ms": 2575.73,
+          "mean_tokens_per_s": 63.8,
+          "vram_peak_mb": 3845.1,
+          "mean_steps": 2.0
+        }
+      },
+      "exa_bootstrap_ci": {
+        "mean": 0.3314,
+        "ci_low": 0.2803,
+        "ci_high": 0.3807
+      },
+      "delta_reg_ci": {
+        "formal_minus_informal": {
+          "delta": 0.3182,
+          "ci_low": 0.2386,
+          "ci_high": 0.3977,
+          "n_pairs": 176
+        },
+        "formal_minus_campur": {
+          "delta": 0.2386,
+          "ci_low": 0.1648,
+          "ci_high": 0.3182,
+          "n_pairs": 176
+        }
+      }
+    },
+    {
+      "run_id": "A_main__M4__S4__Q4_K_M__llamacpp_server__20261125T1330",
+      "experiment": "A_main",
+      "model_id": "M4",
+      "strategy": "S4",
+      "quant": "Q4_K_M",
+      "runtime": "llamacpp_server",
+      "metrics": {
+        "n_items": 528,
+        "n_call": 480,
+        "n_no_call": 48,
+        "CVR": 0.1917,
+        "TSA": 0.8187,
+        "EXA": 0.1174,
+        "EXA_call_only": 0.125,
+        "WVS": 0.3478,
+        "ABS": 0.0417,
+        "VA_by_category": {
+          "angka_kata": 0.0,
+          "code_mix": 0.1181,
+          "enum_merek": 0.1605,
+          "jam_informal": 0.2833,
+          "lokasi_singkatan": 0.0148,
+          "no_call": 0.0417,
+          "nominal_singkat": 0.0,
+          "nominal_slang": 0.0,
+          "satuan": 0.0,
+          "tanggal_format": 0.1739,
+          "waktu_relatif": 0.1789
+        },
+        "EXA_by_register": {
+          "campur": 0.0739,
+          "formal": 0.1818,
+          "informal": 0.0966
+        },
+        "delta_register": {
+          "formal_minus_informal": 0.0852,
+          "formal_minus_campur": 0.108
+        },
+        "error_counts": {
+          "E_HALLUC_ARG": 5,
+          "E_OVERCALL": 32,
+          "E_PARSE": 36,
+          "E_SCHEMA": 338,
+          "E_TOOL": 37,
+          "E_UNDERCALL": 28,
+          "E_VALUE_FORMAT": 90,
+          "E_VALUE_LANG": 58,
+          "E_VALUE_WRONG": 221
+        },
+        "efficiency": {
+          "latency_p50_ms": 1176.47,
+          "latency_p95_ms": 5974.25,
+          "mean_tokens_per_s": 60.18,
+          "vram_peak_mb": 3835.4,
+          "mean_steps": 0.95
+        }
+      },
+      "exa_bootstrap_ci": {
+        "mean": 0.1174,
+        "ci_low": 0.0795,
+        "ci_high": 0.1572
+      },
+      "delta_reg_ci": {
+        "formal_minus_informal": {
+          "delta": 0.0852,
+          "ci_low": 0.0455,
+          "ci_high": 0.1307,
+          "n_pairs": 176
+        },
+        "formal_minus_campur": {
+          "delta": 0.108,
+          "ci_low": 0.0568,
+          "ci_high": 0.1591,
+          "n_pairs": 176
+        }
+      }
+    }
+  ],
+  "mcnemar_holm": [
+    {
+      "model_id": "M1",
+      "strategy_a": "S1",
+      "strategy_b": "S2",
+      "n11": 297,
+      "n10": 13,
+      "n01": 9,
+      "n00": 209,
+      "exact": true,
+      "statistic": 9.0,
+      "p_value": 0.5234670639038086,
+      "p_holm": 0.523467,
+      "significant_holm_05": false
+    },
+    {
+      "model_id": "M1",
+      "strategy_a": "S1",
+      "strategy_b": "S3",
+      "n11": 287,
+      "n10": 23,
+      "n01": 10,
+      "n00": 208,
+      "exact": false,
+      "statistic": 4.363636363636363,
+      "p_value": 0.036713856362704134,
+      "p_holm": 0.183569,
+      "significant_holm_05": false
+    },
+    {
+      "model_id": "M1",
+      "strategy_a": "S1",
+      "strategy_b": "S4",
+      "n11": 302,
+      "n10": 8,
+      "n01": 132,
+      "n00": 86,
+      "exact": false,
+      "statistic": 108.06428571428572,
+      "p_value": 2.602001934225606e-25,
+      "p_holm": 0.0,
+      "significant_holm_05": true
+    },
+    {
+      "model_id": "M1",
+      "strategy_a": "S2",
+      "strategy_b": "S3",
+      "n11": 285,
+      "n10": 21,
+      "n01": 12,
+      "n00": 210,
+      "exact": false,
+      "statistic": 1.9393939393939394,
+      "p_value": 0.1637343543245882,
+      "p_holm": 0.491203,
+      "significant_holm_05": false
+    },
+    {
+      "model_id": "M1",
+      "strategy_a": "S2",
+      "strategy_b": "S4",
+      "n11": 297,
+      "n10": 9,
+      "n01": 137,
+      "n00": 85,
+      "exact": false,
+      "statistic": 110.47260273972603,
+      "p_value": 7.720507875388093e-26,
+      "p_holm": 0.0,
+      "significant_holm_05": true
+    },
+    {
+      "model_id": "M1",
+      "strategy_a": "S3",
+      "strategy_b": "S4",
+      "n11": 288,
+      "n10": 9,
+      "n01": 146,
+      "n00": 85,
+      "exact": false,
+      "statistic": 119.32903225806452,
+      "p_value": 8.872186930164778e-28,
+      "p_holm": 0.0,
+      "significant_holm_05": true
+    },
+    {
+      "model_id": "M3",
+      "strategy_a": "S1",
+      "strategy_b": "S2",
+      "n11": 343,
+      "n10": 3,
+      "n01": 15,
+      "n00": 167,
+      "exact": true,
+      "statistic": 3.0,
+      "p_value": 0.007537841796875,
+      "p_holm": 0.045227,
+      "significant_holm_05": true
+    },
+    {
+      "model_id": "M3",
+      "strategy_a": "S1",
+      "strategy_b": "S3",
+      "n11": 323,
+      "n10": 23,
+      "n01": 12,
+      "n00": 170,
+      "exact": false,
+      "statistic": 2.857142857142857,
+      "p_value": 0.09096894797535765,
+      "p_holm": 0.363876,
+      "significant_holm_05": false
+    },
+    {
+      "model_id": "M3",
+      "strategy_a": "S1",
+      "strategy_b": "S4",
+      "n11": 340,
+      "n10": 6,
+      "n01": 109,
+      "n00": 73,
+      "exact": false,
+      "statistic": 90.4695652173913,
+      "p_value": 1.878442148876698e-21,
+      "p_holm": 0.0,
+      "significant_holm_05": true
+    },
+    {
+      "model_id": "M3",
+      "strategy_a": "S2",
+      "strategy_b": "S3",
+      "n11": 330,
+      "n10": 28,
+      "n01": 5,
+      "n00": 165,
+      "exact": false,
+      "statistic": 14.666666666666666,
+      "p_value": 0.00012829517819532143,
+      "p_holm": 0.000898,
+      "significant_holm_05": true
+    },
+    {
+      "model_id": "M3",
+      "strategy_a": "S2",
+      "strategy_b": "S4",
+      "n11": 339,
+      "n10": 19,
+      "n01": 110,
+      "n00": 60,
+      "exact": false,
+      "statistic": 62.7906976744186,
+      "p_value": 2.2988202240877886e-15,
+      "p_holm": 0.0,
+      "significant_holm_05": true
+    },
+    {
+      "model_id": "M3",
+      "strategy_a": "S3",
+      "strategy_b": "S4",
+      "n11": 320,
+      "n10": 15,
+      "n01": 129,
+      "n00": 64,
+      "exact": false,
+      "statistic": 88.67361111111111,
+      "p_value": 4.6563557494647835e-21,
+      "p_holm": 0.0,
+      "significant_holm_05": true
+    },
+    {
+      "model_id": "M4",
+      "strategy_a": "S1",
+      "strategy_b": "S2",
+      "n11": 50,
+      "n10": 5,
+      "n01": 172,
+      "n00": 301,
+      "exact": false,
+      "statistic": 155.68361581920905,
+      "p_value": 9.926698046727409e-36,
+      "p_holm": 0.0,
+      "significant_holm_05": true
+    },
+    {
+      "model_id": "M4",
+      "strategy_a": "S1",
+      "strategy_b": "S3",
+      "n11": 36,
+      "n10": 19,
+      "n01": 139,
+      "n00": 334,
+      "exact": false,
+      "statistic": 89.62658227848101,
+      "p_value": 2.876333552118803e-21,
+      "p_holm": 0.0,
+      "significant_holm_05": true
+    },
+    {
+      "model_id": "M4",
+      "strategy_a": "S1",
+      "strategy_b": "S4",
+      "n11": 47,
+      "n10": 8,
+      "n01": 15,
+      "n00": 458,
+      "exact": true,
+      "statistic": 8.0,
+      "p_value": 0.21003961563110352,
+      "p_holm": 0.491203,
+      "significant_holm_05": false
+    },
+    {
+      "model_id": "M4",
+      "strategy_a": "S2",
+      "strategy_b": "S3",
+      "n11": 153,
+      "n10": 69,
+      "n01": 22,
+      "n00": 284,
+      "exact": false,
+      "statistic": 23.252747252747252,
+      "p_value": 1.42047393313213e-06,
+      "p_holm": 1.1e-05,
+      "significant_holm_05": true
+    },
+    {
+      "model_id": "M4",
+      "strategy_a": "S2",
+      "strategy_b": "S4",
+      "n11": 46,
+      "n10": 176,
+      "n01": 16,
+      "n00": 290,
+      "exact": false,
+      "statistic": 131.671875,
+      "p_value": 1.7651079551846044e-30,
+      "p_holm": 0.0,
+      "significant_holm_05": true
+    },
+    {
+      "model_id": "M4",
+      "strategy_a": "S3",
+      "strategy_b": "S4",
+      "n11": 35,
+      "n10": 140,
+      "n01": 27,
+      "n00": 326,
+      "exact": false,
+      "statistic": 75.11377245508982,
+      "p_value": 4.443558247728377e-18,
+      "p_holm": 0.0,
+      "significant_holm_05": true
+    }
+  ]
+}
