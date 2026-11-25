@@ -155,5 +155,48 @@ def test_load_all_workspace_yaml_configs() -> None:
     assert inf.main.thinking == "off"
     assert inf.main.temperature == 0.0
     assert load_experiment_config("configs/experiment_A.yaml").quant == "Q4_K_M"
-    assert len(load_experiment_config("configs/experiment_B.yaml").all_quants()) == 5
+    assert load_experiment_config("configs/experiment_B.yaml").all_quants() == ["BF16", "Q8_0", "Q6_K", "Q4_K_M", "Q3_K_M"]
     assert len(load_experiment_config("configs/experiment_C.yaml").all_runtimes()) == 3
+
+
+def test_s2_s3_explicit_no_call_sentinel_scoring() -> None:
+    reg = ToolRegistry.default_target_tools()
+    gold_nocall = EvalItem(
+        item_id="N0001__formal",
+        pair_id="N0001",
+        split="dev",
+        register_name="formal",
+        prompt="Apa ibu kota Indonesia?",
+        reference_time="2026-11-23T18:00:00+07:00",
+        tool_target=None,
+        gold_call=None,
+        strict_keys=[],
+        soft_keys={},
+        value_categories=["no_call"],
+    )
+    gold_call_item = EvalItem(
+        item_id="P0002__formal",
+        pair_id="P0002",
+        split="dev",
+        register_name="formal",
+        prompt="Buatkan pengingat lusa pukul 07.30.",
+        reference_time="2026-11-23T18:00:00+07:00",
+        tool_target="buat_pengingat",
+        gold_call=GoldCall(name="buat_pengingat", arguments={"judul": "bayar kos", "waktu": "2026-11-25T07:30:00+07:00"}),
+        strict_keys=["waktu"],
+        soft_keys={"judul": SoftKeySpec(method="fuzzy", threshold=75)},
+        value_categories=["waktu_relatif"],
+    )
+    raw_sentinel = '{"name": "no_call", "arguments": {}}'
+
+    # On gold no_call, explicit {"name": "no_call"} must score ABS=True, EXA=True, 0 errors (NOT E_PARSE)
+    s_nc = score_item({"pair_id": "N0001", "register": "formal", "raw_output": raw_sentinel, "parsed_call": None}, gold_nocall, reg)
+    assert s_nc["exa"] is True and s_nc["abs"] is True and s_nc["error_codes"] == []
+
+    # On gold call, explicit {"name": "no_call"} must score E_UNDERCALL (NOT E_PARSE)
+    s_uc = score_item({"pair_id": "P0002", "register": "formal", "raw_output": raw_sentinel, "parsed_call": None}, gold_call_item, reg)
+    assert s_uc["exa"] is False and s_uc["error_codes"] == ["E_UNDERCALL"]
+
+    # Truly broken JSON must still score E_PARSE
+    s_bad = score_item({"pair_id": "P0002", "register": "formal", "raw_output": '{"name": "buat_pengingat", "arguments": {', "parsed_call": None}, gold_call_item, reg)
+    assert s_bad["error_codes"] == ["E_PARSE"]

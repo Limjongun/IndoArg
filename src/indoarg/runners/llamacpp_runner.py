@@ -23,7 +23,7 @@ class LlamaCppRunner(BaseRunner):
         base_url: str = "http://127.0.0.1:8080/v1",
         model_spec: ModelSpec | None = None,
         inference_cfg: InferenceConfig | None = None,
-        timeout: float = 120.0,
+        timeout: float = 300.0,
         runtime_name: str = "llamacpp_server",
     ) -> None:
         self.base_url = base_url.rstrip("/")
@@ -31,7 +31,13 @@ class LlamaCppRunner(BaseRunner):
         self.inference_cfg = inference_cfg
         self.timeout = timeout
         self.runtime_name = runtime_name
-        self.client = OpenAI(base_url=self.base_url, api_key="not-needed", timeout=timeout)
+        self._http = httpx.Client(trust_env=False, timeout=timeout)
+        self.client = OpenAI(
+            base_url=self.base_url,
+            api_key="not-needed",
+            timeout=timeout,
+            http_client=self._http,
+        )
         self._version_cache: str | None = None
 
     def get_runtime_version(self) -> str:
@@ -39,7 +45,7 @@ class LlamaCppRunner(BaseRunner):
             return self._version_cache
         root_url = self.base_url[:-3] if self.base_url.endswith("/v1") else self.base_url
         try:
-            resp = httpx.get(f"{root_url}/props", timeout=3.0)
+            resp = self._http.get(f"{root_url}/props", timeout=3.0)
             if resp.status_code == 200:
                 props = resp.json()
                 build = props.get("build_info") or props.get("version")
@@ -57,7 +63,7 @@ class LlamaCppRunner(BaseRunner):
         root_url = self.base_url[:-3] if self.base_url.endswith("/v1") else self.base_url
         info: dict[str, str | None] = {"model_path": None, "model_alias": None, "v1_model_id": None}
         try:
-            r_props = httpx.get(f"{root_url}/props", timeout=3.0)
+            r_props = self._http.get(f"{root_url}/props", timeout=3.0)
             if r_props.status_code == 200:
                 props = r_props.json()
                 info["model_path"] = props.get("model_path")
@@ -65,7 +71,7 @@ class LlamaCppRunner(BaseRunner):
         except Exception:
             pass
         try:
-            r_models = httpx.get(f"{self.base_url}/models", timeout=3.0)
+            r_models = self._http.get(f"{self.base_url}/models", timeout=3.0)
             if r_models.status_code == 200:
                 payload = r_models.json()
                 data = payload.get("data") or []

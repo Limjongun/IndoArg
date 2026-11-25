@@ -99,10 +99,18 @@ def _try_json_objects(text: str) -> list[dict[str, Any]]:
 
 
 def looks_like_malformed_call(raw_output: str) -> bool:
-    """Heuristic to distinguish broken tool-call syntax (E_PARSE) from plain-text abstention (E_UNDERCALL)."""
+    """Heuristic to distinguish broken tool-call syntax (E_PARSE) from plain-text or sentinel abstention."""
     cleaned = _strip_thinking(raw_output or "")
     if not cleaned:
         return False
+    # Clean explicit no-call sentinel JSON from S2/S3 (e.g. {"name": "no_call", "arguments": {}})
+    # is an intentional abstention, NOT a malformed tool call.
+    for obj in _try_json_objects(cleaned):
+        inner = obj["function"] if isinstance(obj.get("function"), dict) else obj
+        if "name" in inner:
+            name_val = inner.get("name")
+            if name_val is None or str(name_val).strip().lower() in _NO_CALL_SENTINELS:
+                return False
     markers = ("<tool_call>", "<|tool_call>", '"arguments"', '"name"', "```json", "call:")
     if any(tok in cleaned for tok in markers):
         return True

@@ -71,7 +71,7 @@ class ToolRegistry:
                 extra = ""
                 if "enum" in spec:
                     vals = spec["enum"]
-                    preview = ", ".join(map(str, vals[:12])) + ("..." if len(vals) > 12 else "")
+                    preview = ", ".join(map(str, vals))
                     extra = f" enum=[{preview}]"
                 elif "pattern" in spec:
                     extra = f" pattern={spec['pattern']}"

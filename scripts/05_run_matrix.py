@@ -4,11 +4,15 @@ from __future__ import annotations
 
 import argparse
 import json
+import subprocess
 import sys
+import time
 from datetime import datetime, timedelta, timezone
+from importlib import import_module
 from pathlib import Path
 from typing import Any
 
+import httpx
 from dotenv import load_dotenv
 from rich.console import Console
 from tqdm import tqdm
@@ -25,12 +29,10 @@ from indoarg.runners import LlamaCppRunner, OllamaRunner
 from indoarg.strategies import run_strategy
 from indoarg.tools.registry import ToolRegistry
 from indoarg.utils.hashing import sha256_file, sha256_text
-from indoarg.utils.sysinfo import collect_sysinfo
+from indoarg.utils.sysinfo import collect_sysinfo, detect_llamacpp_binary
 
 # Import quantization verification gate directly
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from importlib import import_module
-
 _verify_mod = import_module("01_verify_quant")
 
 console = Console()
@@ -50,6 +52,68 @@ def _load_done_keys(jsonl_path: Path) -> set[tuple[str, str]]:
     return done
 
 
+def _start_managed_llamacpp(
+    model_path: Path,
+    *,
+    port: int,
+    n_ctx: int,
+    ngl: int | None,
+    use_fit: bool,
+    log_path: Path,
+) -> tuple[subprocess.Popen[Any], Any]:
+    _, base_cmd = detect_llamacpp_binary()
+    if not base_cmd:
+        raise RuntimeError("Biner llama / llama-server tidak ditemukan di PATH.")
+
+    cmd = [
+        *base_cmd,
+        "-m",
+        str(model_path),
+        "--jinja",
+        "-c",
+        str(n_ctx),
+        "-fa",
+        "on",
+        "--parallel",
+        "1",
+        "--port",
+        str(port),
+    ]
+    if use_fit:
+        cmd.extend(["--fit", "on"])
+    elif ngl is not None:
+        cmd.extend(["-ngl", str(ngl)])
+    else:
+        cmd.extend(["-ngl", "99"])
+
+    log_path.parent.mkdir(parents=True, exist_ok=True)
+    log_fh = log_path.open("w", encoding="utf-8")
+    console.print(f"[cyan]Menyalakan server otomatis:[/cyan] {' '.join(cmd)}")
+    proc = subprocess.Popen(cmd, stdout=log_fh, stderr=subprocess.STDOUT)
+
+    health_url = f"http://127.0.0.1:{port}/health"
+    deadline = time.monotonic() + 180.0
+    with httpx.Client(trust_env=False, timeout=2.0) as health_client:
+        while time.monotonic() < deadline:
+            if proc.poll() is not None:
+                log_fh.close()
+                raise RuntimeError(
+                    f"Server llama.cpp berhenti dengan kode {proc.returncode}. Cek log: {log_path}"
+                )
+            try:
+                r = health_client.get(health_url)
+                if r.status_code == 200:
+                    console.print(f"[green][SERVER SIAP][/green] http://127.0.0.1:{port} (log: {log_path})")
+                    return proc, log_fh
+            except Exception:
+                pass
+            time.sleep(1.0)
+
+    proc.terminate()
+    log_fh.close()
+    raise TimeoutError(f"Server llama.cpp tidak siap dalam 180 detik. Cek log: {log_path}")
+
+
 def main() -> int:
     load_dotenv(repo_root() / ".env")
     parser = argparse.ArgumentParser(description="Eksekusi matriks eksperimen IndoArg.")
@@ -62,9 +126,15 @@ def main() -> int:
     parser.add_argument("--ollama-model", help="Nama tag model Ollama (untuk runtime ollama_native)")
     parser.add_argument("--pairs", default="data/pairs/indoarg_v1.jsonl")
     parser.add_argument("--split", choices=["dev", "test"], help="Override split (default: dari experiment YAML)")
+    parser.add_argument("--tag", help="Override prefix nama eksperimen output (default: <name> untuk test, <name>_dev untuk dev)")
     parser.add_argument("--grammar", default="grammars/tools_v1.gbnf")
     parser.add_argument("--limit", type=int, help="Batasi jumlah item (untuk uji coba)")
-    parser.add_argument("--resume", help="Path file results/raw/<run_id>.jsonl untuk melanjutkan run")
+    parser.add_argument("--resume", help="Path file results/raw/<run_id>.jsonl untuk melanjutkan 1 strategi")
+    parser.add_argument("--auto-resume", action="store_true", help="Otomatis lanjutkan file raw terbaru per strategi jika sudah ada")
+    parser.add_argument("--auto-server", action="store_true", help="Nyalakan dan matikan server llama.cpp otomatis untuk model ini")
+    parser.add_argument("--port", type=int, default=8080, help="Port server saat memakai --auto-server")
+    parser.add_argument("--ngl", type=int, default=None, help="Jumlah GPU layers (-ngl) untuk --auto-server")
+    parser.add_argument("--fit", action="store_true", help="Gunakan --fit on pada --auto-server (otomatis aktif jika GGUF > 4 GB)")
     args = parser.parse_args()
 
     exp_cfg = load_experiment_config(args.exp)
@@ -88,6 +158,7 @@ def main() -> int:
 
     spec = models_cfg.by_id(args.model)
     split = args.split or exp_cfg.split
+    exp_tag = args.tag or (f"{exp_cfg.name}_dev" if split == "dev" else exp_cfg.name)
     strategies = args.strategies or exp_cfg.strategies
     runtime_name = args.runtime or exp_cfg.all_runtimes()[0]
 
@@ -103,114 +174,156 @@ def main() -> int:
     if args.limit:
         items = items[: args.limit]
 
-    if runtime_name == "ollama_native":
-        if not args.ollama_model:
-            console.print("[red]--ollama-model wajib diisi untuk runtime ollama_native[/red]")
-            return 1
-        runner = OllamaRunner(model_tag=args.ollama_model, host=args.endpoint, inference_cfg=inf_cfg)
-        server_model_info = {"ollama_model": args.ollama_model}
-    else:
-        runner = LlamaCppRunner(
-            base_url=args.endpoint,
-            model_spec=spec,
-            inference_cfg=inf_cfg,
-            runtime_name=runtime_name,
-        )
-        ok_model, server_model_info = runner.verify_loaded_model(spec.id)
-        if not ok_model:
-            console.print(
-                f"[red][GAGAL VERIFIKASI MODEL SERVER][/red] Endpoint {args.endpoint} tidak memuat {spec.id}.gguf!\n"
-                f"  Terdeteksi di server: {server_model_info}\n"
-                "  Hentikan proses llama.exe lama (Stop-Process -Name llama -Force) lalu jalankan ulang server."
+    managed_proc: subprocess.Popen[Any] | None = None
+    managed_log_fh: Any = None
+    endpoint = args.endpoint
+
+    try:
+        if args.auto_server and runtime_name != "ollama_native":
+            gguf_path = Path(exp_cfg.model_dir) / quant / f"{spec.id}.gguf"
+            auto_fit = args.fit or (gguf_path.stat().st_size > 4_000_000_000)
+            srv_log = Path("logs/runtime") / f"{exp_tag}_{spec.id}_{quant}.log"
+            managed_proc, managed_log_fh = _start_managed_llamacpp(
+                gguf_path,
+                port=args.port,
+                n_ctx=inf_cfg.main.n_ctx,
+                ngl=args.ngl,
+                use_fit=auto_fit if args.ngl is None else False,
+                log_path=srv_log,
             )
-            return 1
-        console.print(f"[dim]Model terverifikasi di server: {server_model_info}[/dim]")
+            endpoint = f"http://127.0.0.1:{args.port}/v1"
 
-    runtime_ver = runner.get_runtime_version()
-    raw_dir = Path("results/raw")
-    raw_dir.mkdir(parents=True, exist_ok=True)
-    logs_dir = Path("logs")
-    logs_dir.mkdir(parents=True, exist_ok=True)
-
-    for strat in strategies:
-        effective_strat = "S2" if runtime_name == "llamacpp_grammar" else strat
-        ts_id = datetime.now(WIB).strftime("%Y%m%dT%H%M")
-        run_id = f"{exp_cfg.name}__{spec.id}__{effective_strat}__{quant}__{runtime_name}__{ts_id}"
-        out_path = Path(args.resume) if args.resume else (raw_dir / f"{run_id}.jsonl")
-        done_keys = _load_done_keys(out_path)
-
-        # Write reproducibility manifest (§13)
-        manifest = {
-            "run_id": run_id,
-            "experiment": exp_cfg.name,
-            "model_id": spec.id,
-            "model_name": spec.name,
-            "server_model_info": server_model_info,
-            "quant": quant,
-            "gguf_sha256": gguf_sha,
-            "runtime": runtime_name,
-            "runtime_version": runtime_ver,
-            "strategy": effective_strat,
-            "split": split,
-            "inference_yaml_sha256": sha256_file("configs/inference.yaml"),
-            "system_prompt_sha256": sha256_text(sys_prompt),
-            "quant_manifest": quant_rows,
-            "sysinfo": collect_sysinfo(repo_root()),
-        }
-        (logs_dir / f"manifest_{run_id}.json").write_text(
-            json.dumps(manifest, indent=2, ensure_ascii=False),
-            encoding="utf-8",
-        )
-
-        console.print(
-            f"[cyan]Menjalankan[/cyan] {run_id} ({len(items)} item, selesai={len(done_keys)}) -> {out_path}"
-        )
-        with out_path.open("a", encoding="utf-8") as fh:
-            for item in tqdm(items, desc=f"{spec.id}/{effective_strat}"):
-                if (item.pair_id, item.register_name) in done_keys:
-                    continue
-                res = run_strategy(
-                    effective_strat,
-                    runner=runner,
-                    prompt=item.prompt,
-                    reference_time=item.reference_time,
-                    system_prompt=sys_prompt,
-                    target_registry=target_reg,
-                    normalizer_registry=norm_reg,
-                    grammar_text=grammar_text,
-                    stage1_prompt=st1_prompt,
-                    stage2_prompt=st2_prompt,
+        if runtime_name == "ollama_native":
+            if not args.ollama_model:
+                console.print("[red]--ollama-model wajib diisi untuk runtime ollama_native[/red]")
+                return 1
+            runner = OllamaRunner(model_tag=args.ollama_model, host=endpoint, inference_cfg=inf_cfg)
+            server_model_info: dict[str, Any] = {"ollama_model": args.ollama_model}
+        else:
+            runner = LlamaCppRunner(
+                base_url=endpoint,
+                model_spec=spec,
+                inference_cfg=inf_cfg,
+                runtime_name=runtime_name,
+            )
+            ok_model, server_model_info = runner.verify_loaded_model(spec.id)
+            if not ok_model:
+                console.print(
+                    f"[red][GAGAL VERIFIKASI MODEL SERVER][/red] Endpoint {endpoint} tidak memuat {spec.id}.gguf!\n"
+                    f"  Terdeteksi di server: {server_model_info}\n"
+                    "  Hentikan proses llama.exe lama (Stop-Process -Name llama -Force) lalu jalankan ulang server."
                 )
-                record: dict[str, Any] = {
-                    "run_id": run_id,
-                    "experiment": exp_cfg.name,
-                    "model_id": spec.id,
-                    "gguf_sha256": gguf_sha,
-                    "quant": quant,
-                    "runtime": runtime_name,
-                    "runtime_version": runtime_ver,
-                    "strategy": effective_strat,
-                    "pair_id": item.pair_id,
-                    "register": item.register_name,
-                    "prompt_hash": res.prompt_hash,
-                    "request": res.request,
-                    "raw_output": res.raw_output,
-                    "steps": res.steps,
-                    "parsed_call": res.parsed_call,
-                    "latency_ms": res.latency_ms,
-                    "prompt_tokens": res.prompt_tokens,
-                    "completion_tokens": res.completion_tokens,
-                    "tokens_per_s_decode": res.tokens_per_s_decode,
-                    "vram_peak_mb": res.vram_peak_mb,
-                    "thinking_forced": res.thinking_forced,
-                    "error": res.error,
-                    "timestamp": datetime.now(WIB).isoformat(),
-                }
-                fh.write(json.dumps(record, ensure_ascii=False) + "\n")
-                fh.flush()
+                return 1
+            console.print(f"[dim]Model terverifikasi di server: {server_model_info}[/dim]")
 
-    console.print("[green][SELESAI][/green] Eksekusi matriks selesai.")
-    return 0
+        runtime_ver = runner.get_runtime_version()
+        raw_dir = Path("results/raw")
+        raw_dir.mkdir(parents=True, exist_ok=True)
+        logs_dir = Path("logs")
+        logs_dir.mkdir(parents=True, exist_ok=True)
+
+        for strat in strategies:
+            effective_strat = "S2" if runtime_name == "llamacpp_grammar" else strat
+            out_path: Path | None = None
+            if args.resume and len(strategies) == 1:
+                out_path = Path(args.resume)
+                run_id = out_path.stem
+            elif args.auto_resume:
+                prefix = f"{exp_tag}__{spec.id}__{effective_strat}__{quant}__{runtime_name}__"
+                matches = sorted(raw_dir.glob(f"{prefix}*.jsonl"))
+                if matches:
+                    out_path = matches[-1]
+                    run_id = out_path.stem
+
+            if out_path is None:
+                ts_id = datetime.now(WIB).strftime("%Y%m%dT%H%M")
+                run_id = f"{exp_tag}__{spec.id}__{effective_strat}__{quant}__{runtime_name}__{ts_id}"
+                out_path = raw_dir / f"{run_id}.jsonl"
+
+            done_keys = _load_done_keys(out_path)
+
+            # Write reproducibility manifest (§13)
+            manifest = {
+                "run_id": run_id,
+                "experiment": exp_tag,
+                "model_id": spec.id,
+                "model_name": spec.name,
+                "server_model_info": server_model_info,
+                "quant": quant,
+                "gguf_sha256": gguf_sha,
+                "runtime": runtime_name,
+                "runtime_version": runtime_ver,
+                "strategy": effective_strat,
+                "split": split,
+                "inference_yaml_sha256": sha256_file("configs/inference.yaml"),
+                "system_prompt_sha256": sha256_text(sys_prompt),
+                "quant_manifest": quant_rows,
+                "sysinfo": collect_sysinfo(repo_root()),
+            }
+            (logs_dir / f"manifest_{run_id}.json").write_text(
+                json.dumps(manifest, indent=2, ensure_ascii=False),
+                encoding="utf-8",
+            )
+
+            console.print(
+                f"[cyan]Menjalankan[/cyan] {run_id} ({len(items)} item, selesai={len(done_keys)}) -> {out_path}"
+            )
+            with out_path.open("a", encoding="utf-8") as fh:
+                for item in tqdm(items, desc=f"{spec.id}/{effective_strat}"):
+                    if (item.pair_id, item.register_name) in done_keys:
+                        continue
+                    res = run_strategy(
+                        effective_strat,
+                        runner=runner,
+                        prompt=item.prompt,
+                        reference_time=item.reference_time,
+                        system_prompt=sys_prompt,
+                        target_registry=target_reg,
+                        normalizer_registry=norm_reg,
+                        grammar_text=grammar_text,
+                        stage1_prompt=st1_prompt,
+                        stage2_prompt=st2_prompt,
+                    )
+                    record: dict[str, Any] = {
+                        "run_id": run_id,
+                        "experiment": exp_tag,
+                        "model_id": spec.id,
+                        "gguf_sha256": gguf_sha,
+                        "quant": quant,
+                        "runtime": runtime_name,
+                        "runtime_version": runtime_ver,
+                        "strategy": effective_strat,
+                        "pair_id": item.pair_id,
+                        "register": item.register_name,
+                        "prompt_hash": res.prompt_hash,
+                        "request": res.request,
+                        "raw_output": res.raw_output,
+                        "steps": res.steps,
+                        "parsed_call": res.parsed_call,
+                        "latency_ms": res.latency_ms,
+                        "prompt_tokens": res.prompt_tokens,
+                        "completion_tokens": res.completion_tokens,
+                        "tokens_per_s_decode": res.tokens_per_s_decode,
+                        "vram_peak_mb": res.vram_peak_mb,
+                        "thinking_forced": res.thinking_forced,
+                        "error": res.error,
+                        "timestamp": datetime.now(WIB).isoformat(),
+                    }
+                    fh.write(json.dumps(record, ensure_ascii=False) + "\n")
+                    fh.flush()
+
+        console.print("[green][SELESAI][/green] Eksekusi matriks selesai.")
+        return 0
+    finally:
+        if managed_proc is not None:
+            console.print("[dim]Menghentikan server llama.cpp otomatis...[/dim]")
+            managed_proc.terminate()
+            try:
+                managed_proc.wait(timeout=10)
+            except subprocess.TimeoutExpired:
+                managed_proc.kill()
+        if managed_log_fh is not None:
+            managed_log_fh.close()
 
 
 if __name__ == "__main__":

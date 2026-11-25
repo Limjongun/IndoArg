@@ -23,6 +23,27 @@ def verify_experiment_quant(
     quants = [quant_filter] if quant_filter else cfg.all_quants()
     model_ids = models_filter if models_filter else cfg.models
 
+    logs_dir = Path("logs")
+    logs_dir.mkdir(parents=True, exist_ok=True)
+    manifest_path = logs_dir / f"quant_manifest_{cfg.name}.json"
+
+    cached_hashes: dict[tuple[str, int, int], str] = {}
+    if manifest_path.exists():
+        try:
+            for prev in json.loads(manifest_path.read_text(encoding="utf-8")):
+                if (
+                    isinstance(prev, dict)
+                    and prev.get("file")
+                    and prev.get("sha256")
+                    and prev.get("size_bytes") is not None
+                    and prev.get("mtime_ns") is not None
+                ):
+                    cached_hashes[(prev["file"], int(prev["size_bytes"]), int(prev["mtime_ns"]))] = str(
+                        prev["sha256"]
+                    )
+        except Exception:
+            cached_hashes = {}
+
     rows: list[dict[str, Any]] = []
     bad: list[tuple[str, str, str]] = []
 
@@ -38,13 +59,17 @@ def verify_experiment_quant(
                         "file": str(p),
                         "file_type": "MISSING",
                         "sha256": None,
+                        "size_bytes": None,
+                        "mtime_ns": None,
                     }
                 )
                 bad.append((m, expected, "MISSING"))
                 continue
 
             ft = read_file_type(p)
-            digest = sha256_file(p)
+            st = p.stat()
+            cache_key = (str(p), st.st_size, st.st_mtime_ns)
+            digest = cached_hashes.get(cache_key) or sha256_file(p)
             rows.append(
                 {
                     "experiment": cfg.name,
@@ -53,14 +78,13 @@ def verify_experiment_quant(
                     "file": str(p),
                     "file_type": ft,
                     "sha256": digest,
+                    "size_bytes": st.st_size,
+                    "mtime_ns": st.st_mtime_ns,
                 }
             )
             if ft != expected:
                 bad.append((m, expected, ft))
 
-    logs_dir = Path("logs")
-    logs_dir.mkdir(parents=True, exist_ok=True)
-    manifest_path = logs_dir / f"quant_manifest_{cfg.name}.json"
     manifest_path.write_text(json.dumps(rows, indent=2, ensure_ascii=False), encoding="utf-8")
     return len(bad) == 0, rows, bad
 
